@@ -1,0 +1,45 @@
+{
+  "homebrew_version": "3.2.13-71-g3a9ecb7",
+  "used_options": [
+
+  ],
+  "unused_options": [
+
+  ],
+  "built_as_bottle": true,
+  "poured_from_bottle": true,
+  "installed_as_dependency": false,
+  "installed_on_request": true,
+  "changed_files": [
+    "lib/pkgconfig/readline.pc"
+  ],
+  "time": 1635865609,
+  "source_modified_time": 1605728412,
+  "compiler": "clang",
+  "aliases": [
+
+  ],
+  "runtime_dependencies": [
+
+  ],
+  "source": {
+    "spec": "stable",
+    "versions": {
+      "stable": "8.1.1",
+      "head": null,
+      "version_scheme": 0
+    },
+    "path": "/opt/homebrew/Library/Taps/homebrew/homebrew-core/Formula/readline.rb",
+    "tap_git_head": "bb464fe1d7e053bf039436749a01f4c60f5c347c",
+    "tap": "homebrew/core"
+  },
+  "arch": "arm64",
+  "built_on": {
+    "os": "Macintosh",
+    "os_version": "macOS 11",
+    "cpu_family": "arm_firestorm_icestorm",
+    "xcode": "13.0",
+    "clt": "13.0.0.0.1.1630607135",
+    "preferred_perl": "5.30"
+  }
+}
