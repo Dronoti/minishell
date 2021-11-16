@@ -15,20 +15,27 @@
 int	ft_echo(char **args, int *fd)
 {
 	int		i;
-	char	bl;
+	int		j;
 
-	bl = '\n';
-	i = 1;
-	if (ft_strcmp(args[1], "-n") == 0)
-		i++;
-	while (args[i] != NULL)
+	i = 0;
+	while (fd[i])
 	{
-		write(fd[0], args[i], ft_strlen(args[i]) * sizeof(char));
-		if (args[i + 1] != NULL)
-			write(fd[0], " ", sizeof(char));
+		j = 1;
+		if (ft_strcmp(args[1], "-n") == 0)
+			j++;
+		while (args[j] != NULL)
+		{
+			if (write(fd[0], args[j], ft_strlen(args[j]) * sizeof(char)) == -1)
+				return (-1);
+			if (args[j + 1] != NULL)
+				if (write(fd[0], " ", sizeof(char)) == -1)
+					return (-1);
+			j++;
+		}
+		if (ft_strcmp(args[1], "-n") != 0)
+			if (write(fd[0], "\n", sizeof(char)) == -1)
+				return (-1);
 		i++;
 	}
-	if (ft_strcmp(args[1], "-n") != 0)
-		write(fd[0], &bl, sizeof(char));
 	return (1);
 }
