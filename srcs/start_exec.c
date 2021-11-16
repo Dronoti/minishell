@@ -28,8 +28,8 @@ int	ft_check_builtins(char **tokens, char ***c_env, int *fd)
 	(void)c_env;
 	(void)fd;
 
-//	if (!ft_strcmp(tokens[0], "echo"))
-//		return (ft_echo(tokens, fd));
+	if (!ft_strcmp(tokens[0], "echo"))
+		return (ft_echo(tokens, fd));
 //	else if (!ft_strcmp(tokens[0], "pwd"))
 //		return (ft_pwd(tokens, fd));
 //	else if (!ft_strcmp(tokens[0], "cd"))
