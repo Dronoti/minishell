@@ -68,7 +68,7 @@ int	ft_isspace(char c)
 
 int	ft_isspec_char(char *str)
 {
-	if (str[0] == '|' || str[0] == '=' || str[0] == '>' || str[0] == '<')
+	if (str[0] == '|' || str[0] == '>' || str[0] == '<')
 	{
 		if ((str[0] == '>' && str[1] == '>')
 			|| (str[0] == '<' && str[1] == '<'))

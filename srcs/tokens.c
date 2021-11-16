@@ -30,8 +30,6 @@ int	ft_len_token(char *cmd)
 		if (cmd[i])
 			i++;
 	}
-	if (i != 0 && cmd[i] == '=')
-		i++;
 	if (i == 0)
 		return (ft_isspec_char(cmd));
 	return (i);
