@@ -1,21 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: timur <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/16 20:26:05 by timur             #+#    #+#             */
+/*   Updated: 2021/11/16 20:26:10 by timur            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
 int	ft_pwd(char **args, int *fd)
 {
-	(void)args;
-	char *path;
-	int i;
+	char	*path;
+	int		i;
 
+	(void)args;
 	path = getcwd(NULL, 0);
 	if (path == NULL)
 		return (-1);
-
 	i = 0;
 	while (fd[i])
 	{
-		write(fd[i], path, ft_strlen(path));
-		write(fd[i], "\n", 1);
+		if (write(fd[i], path, ft_strlen(path)) == -1)
+			return (-1);
+		if (write(fd[i], "\n", 1) == -1)
+			return (-1);
 		i++;
 	}
 	return (1);
