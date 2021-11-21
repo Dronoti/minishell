@@ -6,7 +6,7 @@
 /*   By: bkael <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 14:30:46 by bkael             #+#    #+#             */
-/*   Updated: 2021/11/09 14:31:08 by bkael            ###   ########.fr       */
+/*   Updated: 2021/11/21 14:31:08 by bkael            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	ft_parser(char **cmd, char **c_env, char *prompt)
 		g_code = 1;
 		return ;
 	}
-	if (!ft_start_exec(&tokens, &c_env, *cmd, prompt))
+	if (!ft_check_pipe(&tokens, &c_env, *cmd, prompt))
 		g_code = 0;
 	ft_free_tokens(tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: bkael <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 08:39:32 by bkael             #+#    #+#             */
-/*   Updated: 2021/11/07 15:59:50 by bkael            ###   ########.fr       */
+/*   Updated: 2021/11/21 15:59:50 by bkael            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		ft_errors("Error: Too many arguments", 1);
 	c_env = ft_create_env(env, argv);
-	ft_init_signals();
 	while (1)
 	{
+		ft_init_signals();
 		prompt = ft_create_prompt(c_env);
 		cmd = readline(prompt);
 		if (!cmd)
