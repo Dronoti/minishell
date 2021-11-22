@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: timur <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,18 +12,13 @@
 
 #include "minishell.h"
 
-char **get_path_splitted(char *const *args);
+char	**get_path_splitted(char *const *args);
+char	*construct_abs_path(char **path_splitted, int len);
 
-int	ft_cd(char **args, int *fd) {
-	char **path_splitted;
-	char *path;
+int	traversing_resolve_dots(char **path_splitted)
+{
+	int	i;
 
-	(void) fd;
-	path_splitted = get_path_splitted(args);
-	if (!path_splitted)
-		return (-1);
-
-	int i;
 	i = 0;
 	while (path_splitted[i] != NULL)
 	{
@@ -34,26 +29,42 @@ int	ft_cd(char **args, int *fd) {
 		}
 		else if (ft_strcmp(path_splitted[i], "..") == 0)
 		{
-			int j;
-			j = i - 1;
-			while (j >= 0) {
-				if (path_splitted[j] != NULL && ft_strcmp(path_splitted[j], "..") != 0)
-				{
-					free(path_splitted[j]);
-					path_splitted[j] = NULL;
-					break;
-				}
-				j--;
-			}
+			ft_cd_nullify_preceding_pathname(path_splitted, i - 1);
 			free(path_splitted[i]);
 			path_splitted[i] = NULL;
 		}
 		i++;
 	}
+	return (i);
+}
 
-	char *tmp_path;
-	int len;
-	len = i;
+int	ft_cd(char **args, int *fd)
+{
+	char	**path_splitted;
+	char	*path;
+	int		len;
+
+	(void) fd;
+	path_splitted = get_path_splitted(args);
+	if (!path_splitted)
+		return (-1);
+	len = traversing_resolve_dots(path_splitted);
+	path = construct_abs_path(path_splitted, len);
+	if (chdir(path) != 0)
+	{
+		free(path);
+		return (-1);
+	}
+	free(path);
+	return (1);
+}
+
+char	*construct_abs_path(char **path_splitted, int len)
+{
+	int		i;
+	char	*path;
+	char	*tmp_path;
+
 	i = 0;
 	path = ft_strndup("/", ft_strlen("/"));
 	while (len > 0)
@@ -73,18 +84,12 @@ int	ft_cd(char **args, int *fd) {
 		len--;
 	}
 	free(path_splitted);
-	if (chdir(path) != 0)
-	{
-		free(path);
-		return (-1);
-	}
-	free(path);
-	return (1);
+	return (path);
 }
 
-char *get_path_raw(char *const *args, char *cwd)
+char	*get_path_raw(char *const *args, char *cwd)
 {
-	char *path_raw;
+	char	*path_raw;
 
 	if (args[1] == NULL)
 		path_raw = ft_strndup(getenv("HOME"), ft_strlen(getenv("HOME")));
@@ -95,12 +100,12 @@ char *get_path_raw(char *const *args, char *cwd)
 	return (path_raw);
 }
 
-char **get_path_splitted(char *const *args)
+char	**get_path_splitted(char *const *args)
 {
-	char *cwd_without_trail_slash;
-	char *cwd;
-	char *path_raw;
-	char **path_splitted;
+	char	*cwd_without_trail_slash;
+	char	*cwd;
+	char	*path_raw;
+	char	**path_splitted;
 
 	cwd_without_trail_slash = getcwd(NULL, 0);
 	if (cwd_without_trail_slash == NULL)

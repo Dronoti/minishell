@@ -80,4 +80,6 @@ int		ft_env(char **tokens, int *fd, char **c_env);
 int		ft_export(char **tokens, int *fd, char ***c_env);
 int		ft_unset(char **tokens, int *fd, char ***c_env);
 
+void	ft_cd_nullify_preceding_pathname(char **path_splitted, int j);
+
 #endif
