@@ -12,30 +12,31 @@
 
 #include "minishell.h"
 
-int	ft_echo(char **args, int *fd)
+int	ft_write_error(void)
+{
+	ft_putendl_fd("Write error", 2);
+	g_code = 1;
+	return (-1);
+}
+
+int	ft_echo(char **args, int fd)
 {
 	int		i;
-	int		j;
 
-	i = 0;
-	while (fd[i])
+	i = 1;
+	if (ft_strcmp(args[1], "-n") == 0)
+		i++;
+	while (args[i] != NULL)
 	{
-		j = 1;
-		if (ft_strcmp(args[1], "-n") == 0)
-			j++;
-		while (args[j] != NULL)
-		{
-			if (write(fd[0], args[j], ft_strlen(args[j]) * sizeof(char)) == -1)
-				return (-1);
-			if (args[j + 1] != NULL)
-				if (write(fd[0], " ", sizeof(char)) == -1)
-					return (-1);
-			j++;
-		}
-		if (ft_strcmp(args[1], "-n") != 0)
-			if (write(fd[0], "\n", sizeof(char)) == -1)
-				return (-1);
+		if (write(fd, args[i], ft_strlen(args[i]) * sizeof(char)) == -1)
+			return (ft_write_error());
+		if (args[i + 1] != NULL)
+			if (write(fd, " ", sizeof(char)) == -1)
+				return (ft_write_error());
 		i++;
 	}
+	if (ft_strcmp(args[1], "-n") != 0)
+		if (write(fd, "\n", sizeof(char)) == -1)
+			return (ft_write_error());
 	return (1);
 }

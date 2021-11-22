@@ -6,7 +6,7 @@
 /*   By: bkael <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 18:58:59 by bkael             #+#    #+#             */
-/*   Updated: 2021/11/11 18:59:22 by bkael            ###   ########.fr       */
+/*   Updated: 2021/11/22 18:59:22 by bkael            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_count_redir(char **tokens)
 		if (!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>"))
 		{
 			if (!ft_strcmp(tokens[i + 1], ">") || !tokens[i + 1]
-				|| !ft_strcmp(tokens[i + 1], ">>") || i == 0)
+				|| !ft_strcmp(tokens[i + 1], ">>"))
 			{
 				write(2, "minishell: parse error near `", 29);
 				if (tokens[i + 1])
@@ -41,100 +41,78 @@ int	ft_count_redir(char **tokens)
 	return (count);
 }
 
-void	ft_close_fd(int *fd)
-{
-	int	i;
-
-	if (fd)
-	{
-		i = 0;
-		while (fd[i] > 1)
-		{
-			close(fd[i]);
-			i++;
-		}
-		free(fd);
-		fd = NULL;
-	}
-}
-
 char	**ft_delete_redir(char **tokens, int count_redir)
 {
 	int		i;
-	int		count_tokens;
+	int		count_tok;
 	char	**copy;
 
-	count_tokens = 0;
-	while (tokens[count_tokens])
-		count_tokens++;
-	count_tokens -= count_redir * 2;
-	copy = (char **)malloc(sizeof(char *) * (count_tokens + 1));
-	i = 0;
-	count_tokens = 0;
-	while (tokens[i])
+	count_tok = 0;
+	while (tokens[count_tok])
+		count_tok++;
+	copy = (char **)malloc(sizeof(char *) * (count_tok - count_redir * 2 + 1));
+	i = -1;
+	count_tok = 0;
+	while (tokens[++i] && copy)
 	{
 		if (!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>"))
 			i++;
 		else
-			copy[count_tokens++] = ft_strndup(tokens[i], ft_strlen(tokens[i]));
-		i++;
+		{
+			copy[count_tok] = ft_strndup(tokens[i], ft_strlen(tokens[i]));
+			if (!copy[count_tok++])
+				copy = ft_free_tokens(copy);
+		}
 	}
-	copy[count_tokens] = NULL;
+	if (copy)
+		copy[count_tok] = NULL;
 	ft_free_tokens(tokens);
 	return (copy);
 }
 
-char	**ft_init_fd(int **fd, char **tokens, int count_redir)
+char	**ft_init_fd(int *fd, char **tokens, int count_redir)
 {
 	int	i;
-	int	j;
+	int	r;
 
 	i = -1;
-	j = 0;
+	r = count_redir;
 	while (tokens[++i])
 	{
 		if (!ft_strcmp(tokens[i], ">"))
-			(*fd)[j++] = open(tokens[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+			*fd = open(tokens[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 		else if (!ft_strcmp(tokens[i], ">>"))
-			(*fd)[j++] = open(tokens[i + 1], O_RDWR | O_CREAT | O_APPEND, 0644);
+			*fd = open(tokens[i + 1], O_RDWR | O_CREAT | O_APPEND, 0644);
 		if ((!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>"))
-			&& (*fd)[j - 1] < 0)
+			&& *fd < 0)
 		{
 			write(2, "minishell: invalid redirect: ", 29);
 			ft_putendl_fd(tokens[i + 1], 2);
-			ft_close_fd(*fd);
-			*fd = NULL;
 			return (tokens);
 		}
+		if ((!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>")))
+			if (--r)
+				close(*fd);
 	}
-	(*fd)[j] = 0;
 	return (ft_delete_redir(tokens, count_redir));
 }
 
-int	*ft_check_redirect(char ***tokens)
+int	ft_check_redirect(char ***tokens)
 {
-	int	*fd;
+	int	fd;
 	int	count_redir;
 
 	count_redir = ft_count_redir(*tokens);
+	fd = 1;
 	if (count_redir == -1)
-		return (NULL);
+		return (-1);
 	if (count_redir)
-		fd = (int *)malloc(sizeof(int) * (count_redir + 1));
-	else
-		fd = (int *)malloc(sizeof(int) * 2);
-	if (!fd)
+		*tokens = ft_init_fd(&fd, *tokens, count_redir);
+	if (!*tokens)
 	{
 		ft_putendl_fd("Malloc error", 2);
 		g_code = 1;
-		return (NULL);
-	}
-	if (count_redir)
-		*tokens = ft_init_fd(&fd, *tokens, count_redir);
-	else
-	{
-		fd[0] = 1;
-		fd[1] = 0;
+		return (-1);
 	}
 	return (fd);
 }

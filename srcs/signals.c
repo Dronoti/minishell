@@ -38,7 +38,6 @@ void	ft_handler(int signum)
 
 void	ft_init_signals(void)
 {
-	g_code = 0;
 	rl_catch_signals = 0;
 	signal(SIGINT, ft_handler);
 	signal(SIGQUIT, SIG_IGN);

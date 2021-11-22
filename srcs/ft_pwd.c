@@ -12,25 +12,22 @@
 
 #include "minishell.h"
 
-int	ft_pwd(char **args, int *fd)
+int	ft_pwd(int fd)
 {
 	char	*path;
-	int		i;
 
-	(void)args;
 	path = getcwd(NULL, 0);
 	if (path == NULL)
-		return (-1);
-	i = 0;
-	while (fd[i])
 	{
-		if (write(fd[i], path, ft_strlen(path)) == -1
-			|| write(fd[i], "\n", sizeof(char)) == -1)
-		{
-			free(path);
-			return (-1);
-		}
-		i++;
+		ft_putendl_fd("Malloc error", 2);
+		g_code = 1;
+		return (-1);
+	}
+	if (write(fd, path, sizeof(char) * ft_strlen(path)) == -1
+		|| write(fd, "\n", sizeof(char)) == -1)
+	{
+		free(path);
+		return (ft_write_error());
 	}
 	free(path);
 	return (1);

@@ -38,7 +38,7 @@ int	traversing_resolve_dots(char **path_splitted)
 	return (i);
 }
 
-int	ft_cd(char **args, int *fd)
+int	ft_cd(char **args, int fd)
 {
 	char	**path_splitted;
 	char	*path;

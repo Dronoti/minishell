@@ -46,12 +46,27 @@ int	ft_isvalid_quotes(char *cmd)
 	return (0);
 }
 
-int	ft_isvalid_pipes_braces(char *cmd)
+int	ft_first_ispipe(char *cmd)
 {
 	int	i;
 
 	i = 0;
-	while (cmd[i])
+	while (cmd[i] && ft_isspace(cmd[i]))
+		i++;
+	if (cmd[i] == '|')
+		return (1);
+	else
+		return (0);
+}
+
+int	ft_isvalid_pipes_braces(char *cmd)
+{
+	int	i;
+
+	if (ft_first_ispipe(cmd))
+		return (1);
+	i = -1;
+	while (cmd[++i])
 	{
 		if (cmd[i] == '|')
 		{
@@ -69,7 +84,6 @@ int	ft_isvalid_pipes_braces(char *cmd)
 			if (cmd[i] != '}')
 				return (1);
 		}
-		i++;
 	}
 	return (0);
 }

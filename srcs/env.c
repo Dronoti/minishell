@@ -47,6 +47,7 @@ char	**ft_create_env(char **env, char **argv)
 	int		i;
 
 	(void)argv;
+	g_code = 0;
 	i = 0;
 	while (env[i])
 		i++;

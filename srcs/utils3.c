@@ -6,7 +6,7 @@
 /*   By: bkael <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:02:48 by bkael             #+#    #+#             */
-/*   Updated: 2021/11/11 20:03:02 by bkael            ###   ########.fr       */
+/*   Updated: 2021/11/22 20:03:02 by bkael            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ void	ft_free_exit(char ***tokens, char ***c_env, char *cmd, char *prompt)
 {
 	ft_free_tokens(*tokens);
 	ft_free_env(*c_env);
-	free(cmd);
-	free(prompt);
+	if (cmd)
+		free(cmd);
+	if (prompt)
+		free(prompt);
 	exit(g_code);
 }
 
