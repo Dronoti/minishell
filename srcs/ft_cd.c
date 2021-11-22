@@ -12,35 +12,14 @@
 
 #include "minishell.h"
 
+char **get_path_splitted(char *const *args);
+
 int	ft_cd(char **args, int *fd) {
-	char *cwd_without_trail_slash;
-	char *cwd;
-	char *path_raw;
 	char **path_splitted;
 	char *path;
 
 	(void) fd;
-	cwd_without_trail_slash = getcwd(NULL, 0);
-	if (cwd_without_trail_slash == NULL)
-		return (-1);
-	cwd = ft_strjoin(cwd_without_trail_slash, "/");
-	free(cwd_without_trail_slash);
-	if (cwd == NULL)
-		return (-1);
-
-	if (args[1] == NULL)
-		path_raw = ft_strndup(getenv("HOME"), ft_strlen(getenv("HOME")));
-	else if (args[1][0] == '/')
-		path_raw = ft_strndup(args[1], ft_strlen(args[1]));
-	else
-		path_raw = ft_strjoin(cwd, args[1]);
-	free(cwd);
-
-	if (!path_raw)
-		return (-1);
-
-	path_splitted = ft_split(path_raw, '/');
-	free(path_raw);
+	path_splitted = get_path_splitted(args);
 	if (!path_splitted)
 		return (-1);
 
@@ -60,7 +39,6 @@ int	ft_cd(char **args, int *fd) {
 			while (j >= 0) {
 				if (path_splitted[j] != NULL && ft_strcmp(path_splitted[j], "..") != 0)
 				{
-					// Не надо тут фришать, потому что я потом работаю еще с этой памятью:
 					free(path_splitted[j]);
 					path_splitted[j] = NULL;
 					break;
@@ -77,8 +55,7 @@ int	ft_cd(char **args, int *fd) {
 	int len;
 	len = i;
 	i = 0;
-	path = malloc(sizeof(char));
-	*path = '/';
+	path = ft_strndup("/", ft_strlen("/"));
 	while (len > 0)
 	{
 		if (path_splitted[i] != NULL)
@@ -103,4 +80,42 @@ int	ft_cd(char **args, int *fd) {
 	}
 	free(path);
 	return (1);
+}
+
+char *get_path_raw(char *const *args, char *cwd)
+{
+	char *path_raw;
+
+	if (args[1] == NULL)
+		path_raw = ft_strndup(getenv("HOME"), ft_strlen(getenv("HOME")));
+	else if (args[1][0] == '/')
+		path_raw = ft_strndup(args[1], ft_strlen(args[1]));
+	else
+		path_raw = ft_strjoin(cwd, args[1]);
+	return (path_raw);
+}
+
+char **get_path_splitted(char *const *args)
+{
+	char *cwd_without_trail_slash;
+	char *cwd;
+	char *path_raw;
+	char **path_splitted;
+
+	cwd_without_trail_slash = getcwd(NULL, 0);
+	if (cwd_without_trail_slash == NULL)
+		return (NULL);
+	cwd = ft_strjoin(cwd_without_trail_slash, "/");
+	free(cwd_without_trail_slash);
+	if (cwd == NULL)
+		return (NULL);
+	path_raw = get_path_raw(args, cwd);
+	free(cwd);
+	if (!path_raw)
+		return (NULL);
+	path_splitted = ft_split(path_raw, '/');
+	free(path_raw);
+	if (!path_splitted)
+		return (NULL);
+	return (path_splitted);
 }
