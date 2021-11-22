@@ -46,10 +46,10 @@ void	ft_handler(int signum);
 char	*ft_join_shell(char *s1, char *s2);
 char	*ft_create_prompt(char **c_env);
 char	*ft_strndup(char *s1, int n);
-char   **ft_split(char *s, char c);
-void   *ft_memchr(const void *s, int c, size_t n);
-void   *ft_memmove(void *dst, const void *src, size_t len);
-void   *ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
+char	**ft_split(char *s, char c);
+void	*ft_memchr(const void *s, int c, size_t n);
+void	*ft_memmove(void *dst, const void *src, size_t len);
+void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
 char	**ft_create_env(char **env, char **argv);
 void	ft_free_env(char **c_env);
 void	ft_print_env(char **c_env);
@@ -109,6 +109,6 @@ int		ft_env(char **tokens, int fd, char **c_env);
 int		ft_export(char **tokens, int fd, char ***c_env);
 int		ft_unset(char **tokens, int fd, char ***c_env);
 
-void   ft_cd_nullify_preceding_pathname(char **path_splitted, int j);
+void	ft_cd_nullify_preceding_pathname(char **path_splitted, int j);
 
 #endif
