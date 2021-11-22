@@ -24,7 +24,6 @@ int	ft_check_bins(char **tokens, char ***c_env, int *fd)
 
 int	ft_check_builtins(char **tokens, char ***c_env, int *fd)
 {
-	(void)tokens;
 	(void)c_env;
 	(void)fd;
 
@@ -32,8 +31,8 @@ int	ft_check_builtins(char **tokens, char ***c_env, int *fd)
 		return (ft_echo(tokens, fd));
 	if (!ft_strcmp(tokens[0], "pwd"))
 		return (ft_pwd(tokens, fd));
-//	else if (!ft_strcmp(tokens[0], "cd"))
-//		return (ft_cd(tokens, fd));
+	else if (!ft_strcmp(tokens[0], "cd"))
+		return (ft_cd(tokens, fd));
 //	else if (!ft_strcmp(tokens[0], "env"))
 //		return (ft_env(tokens, fd, *c_env));
 //	else if (!ft_strcmp(tokens[0], "export"))
