@@ -24,11 +24,14 @@ int	ft_pwd(char **args, int *fd)
 	i = 0;
 	while (fd[i])
 	{
-		if (write(fd[i], path, ft_strlen(path)) == -1)
+		if (write(fd[i], path, ft_strlen(path)) == -1
+			|| write(fd[i], "\n", sizeof(char)) == -1)
+		{
+			free(path);
 			return (-1);
-		if (write(fd[i], "\n", 1) == -1)
-			return (-1);
+		}
 		i++;
 	}
+	free(path);
 	return (1);
 }
