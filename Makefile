@@ -26,6 +26,15 @@ SRC = srcs/env.c \
 	srcs/utils.c \
 	srcs/utils2.c \
 	srcs/utils3.c \
+	srcs/ft_split.c \
+	srcs/ft_memchr.c \
+	srcs/ft_memmove.c \
+	srcs/ft_memcpy.c \
+	srcs/ft_echo.c \
+	srcs/ft_pwd.c \
+	srcs/ft_cd.c \
+	srcs/ft_cd_nullify_preceding_pathname.c \
+	srcs/pipe.c \
 
 OBJ = $(SRC:%.c=%.o)
 
