@@ -22,6 +22,23 @@
 
 int		g_code;
 
+typedef struct s_p
+{
+	int		save_in;
+	int		start;
+	int		end;
+	int		children;
+	int		fd1[2];
+	int		fd2[2];
+	int		last;
+	int		pid;
+	char	**copy;
+	char	***tokens;
+	char	***c_env;
+	char	*cmd;
+	char	*prompt;
+}				t_p;
+
 void	ft_errors(char *msg, int code);
 int		ft_strlen(char *s);
 void	ft_putendl_fd(char *s, int fd);
@@ -71,6 +88,17 @@ void	ft_close_fd(int *fd);
 char	**ft_delete_redir(char **tokens, int count_redir);
 int		ft_check_builtins(char **tokens, char ***c_env, int *fd);
 int		ft_check_bins(char **tokens, char ***c_env, int *fd);
+int		ft_check_pipe(char ***tokens, char ***c_env, char *cmd, char *prompt);
+t_p		ft_init_arg(char ***tokens, char ***c_env, char *cmd, char *prompt);
+void	ft_free_exit(char ***tokens, char ***c_env, char *cmd, char *prompt);
+void	ft_child_handler(int signum);
+void	ft_init_child_signals(void);
+void	ft_child_quit(int signum);
+void	ft_child_exit(int signum);
+int		ft_init_pipes(int *fd1, int *fd2);
+int		ft_run_pipe(t_p *arg);
+void	ft_run_fork(t_p *arg, char **tokens, int st);
+void	ft_next_pipe(int *fd1, int *fd2, int next);
 
 int		ft_exit(char **tokens, char ***c_env);
 int		ft_echo(char **tokens, int *fd);
