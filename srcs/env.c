@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int copy_env_vars(char **dst, char *const *src);
+
 void	ft_free_env(char **c_env)
 {
 	int	i;
@@ -41,12 +43,11 @@ void	ft_print_env(char **c_env)
 	}
 }
 
-char	**ft_create_env(char **env, char **argv)
+char	**ft_create_env(char **env)
 {
 	char	**copy;
 	int		i;
 
-	(void)argv;
 	g_code = 0;
 	i = 0;
 	while (env[i])
@@ -54,19 +55,26 @@ char	**ft_create_env(char **env, char **argv)
 	copy = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!copy)
 		ft_errors("Malloc error", 1);
+	i = copy_env_vars(copy, env);
+	copy[i] = NULL;
+	return (copy);
+}
+
+int copy_env_vars(char **dst, char *const *src) {
+	int	i;
+
 	i = 0;
-	while (env[i])
+	while (src[i])
 	{
-		copy[i] = ft_strndup(env[i], ft_strlen(env[i]));
-		if (!copy[i])
+		dst[i] = ft_strndup(src[i], ft_strlen(src[i]));
+		if (!dst[i])
 		{
-			ft_free_env(copy);
+			ft_free_env(dst);
 			ft_errors("Malloc error", 1);
 		}
 		i++;
 	}
-	copy[i] = NULL;
-	return (copy);
+	return i;
 }
 
 int	ft_find_key(char *key, char *str)

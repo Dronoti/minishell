@@ -35,13 +35,14 @@ SRC = srcs/env.c \
 	srcs/ft_cd.c \
 	srcs/ft_cd_nullify_preceding_pathname.c \
 	srcs/ft_env.c \
+	srcs/ft_export.c \
 	srcs/pipe.c \
 
 OBJ = $(SRC:%.c=%.o)
 
-FLAGS = -Wall -Wextra -Werror -I ./readline/8.1.1/include
+FLAGS = -Wall -Wextra -Werror -I /Users/timur/.brew/opt/readline/include
 
-READLINE = -lreadline -L ./readline/8.1.1/lib
+READLINE = -lreadline -L /Users/timur/.brew/opt/readline/lib
 
 all: $(NAME)
 

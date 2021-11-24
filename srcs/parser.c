@@ -76,7 +76,7 @@ char	*ft_replace_env(char *cmd, char **c_env)
 	return (new);
 }
 
-void	ft_parser(char **cmd, char **c_env, char *prompt)
+void	ft_parser(char **cmd, char ***c_env, char *prompt)
 {
 	char	**tokens;
 
@@ -86,7 +86,7 @@ void	ft_parser(char **cmd, char **c_env, char *prompt)
 		g_code = 1;
 		return ;
 	}
-	*cmd = ft_replace_env(*cmd, c_env);
+	*cmd = ft_replace_env(*cmd, *c_env);
 	if (!*cmd)
 	{
 		ft_putendl_fd("Malloc error", 2);
@@ -100,7 +100,7 @@ void	ft_parser(char **cmd, char **c_env, char *prompt)
 		g_code = 1;
 		return ;
 	}
-	if (!ft_check_pipe(&tokens, &c_env, *cmd, prompt))
+	if (!ft_check_pipe(&tokens, c_env, *cmd, prompt))
 		g_code = 0;
 	ft_free_tokens(tokens);
 }

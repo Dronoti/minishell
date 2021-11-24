@@ -50,12 +50,12 @@ char	**ft_split(char *s, char c);
 void	*ft_memchr(const void *s, int c, size_t n);
 void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
-char	**ft_create_env(char **env, char **argv);
+char	**ft_create_env(char **env);
 void	ft_free_env(char **c_env);
 void	ft_print_env(char **c_env);
 void	ft_init_signals(void);
 void	ft_free_all(char *prompt, char **c_env, char *cmd);
-void	ft_parser(char **cmd, char **c_env, char *prompt);
+void	ft_parser(char **cmd, char ***c_env, char *prompt);
 int		ft_exist_cmd(char *cmd);
 int		ft_isvalid_quotes(char *cmd);
 int		ft_isvalid_pipes_braces(char *cmd);
@@ -110,5 +110,6 @@ int		ft_export(char **tokens, int fd, char ***c_env);
 int		ft_unset(char **tokens, int fd, char ***c_env);
 
 void	ft_cd_nullify_preceding_pathname(char **path_splitted, int j);
+int		copy_env_vars(char **dst, char *const *src);
 
 #endif

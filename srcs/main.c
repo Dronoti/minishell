@@ -70,9 +70,10 @@ int	main(int argc, char **argv, char **env)
 	char	*prompt;
 	char	**c_env;
 
+	(void)argv;
 	if (argc != 1)
 		ft_errors("Error: Too many arguments", 1);
-	c_env = ft_create_env(env, argv);
+	c_env = ft_create_env(env);
 	while (1)
 	{
 		ft_init_signals();
@@ -83,7 +84,7 @@ int	main(int argc, char **argv, char **env)
 		if (ft_exist_cmd(cmd))
 		{
 			add_history(cmd);
-			ft_parser(&cmd, c_env, prompt);
+			ft_parser(&cmd, &c_env, prompt);
 		}
 		if (cmd)
 			free(cmd);

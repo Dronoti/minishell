@@ -31,8 +31,8 @@ int	ft_check_builtins(char **tokens, char ***c_env, int fd)
 		return (ft_cd(tokens, fd));
 	else if (!ft_strcmp(tokens[0], "env"))
 		return (ft_env(tokens, fd, *c_env));
-//	else if (!ft_strcmp(tokens[0], "export"))
-//		return (ft_export(tokens, fd, c_env));
+	else if (!ft_strcmp(tokens[0], "export"))
+		return (ft_export(tokens, fd, c_env));
 //	else if (!ft_strcmp(tokens[0], "unset"))
 //		return (ft_unset(tokens, fd, c_env));
 //	else if (!ft_strcmp(tokens[0], "exit"))
