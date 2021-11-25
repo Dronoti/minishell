@@ -27,6 +27,7 @@ SRC = srcs/env.c \
 	srcs/utils2.c \
 	srcs/utils3.c \
 	srcs/ft_split.c \
+	srcs/ft_substr.c \
 	srcs/ft_memchr.c \
 	srcs/ft_memmove.c \
 	srcs/ft_memcpy.c \

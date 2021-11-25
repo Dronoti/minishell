@@ -47,6 +47,7 @@ char	*ft_join_shell(char *s1, char *s2);
 char	*ft_create_prompt(char **c_env);
 char	*ft_strndup(char *s1, int n);
 char	**ft_split(char *s, char c);
+char	*ft_substr(char *s, int start, size_t len);
 void	*ft_memchr(const void *s, int c, size_t n);
 void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
