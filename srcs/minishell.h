@@ -39,6 +39,14 @@ typedef struct s_p
 	char	*prompt;
 }				t_p;
 
+typedef struct s_var
+{
+	int		key_len;
+	int		value_len;
+	char	*key;
+	char	*value;
+}	t_var;
+
 void	ft_errors(char *msg, int code);
 int		ft_strlen(char *s);
 void	ft_putendl_fd(char *s, int fd);
@@ -112,5 +120,10 @@ int		ft_unset(char **tokens, int fd, char ***c_env);
 
 void	ft_cd_nullify_preceding_pathname(char **path_splitted, int j);
 int		copy_env_vars(char **dst, char *const *src);
+void	setup_var(t_var *var, char **var_str);
+void	update_var(char **existing_var_record, t_var *new_var);
+void	ft_extend_env(char ***env, t_var *new_var);
+int		is_valid_var_key(char *key);
+char	*get_str_from_symbol(char *s, char c);
 
 #endif
