@@ -38,6 +38,7 @@ SRC = srcs/env.c \
 	srcs/ft_env.c \
 	srcs/ft_export.c \
 	srcs/ft_export_helpers.c \
+	srcs/ft_export_helpers2.c \
 	srcs/pipe.c \
 
 OBJ = $(SRC:%.c=%.o)

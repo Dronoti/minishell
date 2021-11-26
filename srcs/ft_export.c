@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-char	*get_str_from_symbol(char *s, char c);
-void	handle_str_with_equals_sign(char **str, char ***c_env);
+int		handle_no_params(int fd, char **c_env);
+void	handle_str_with_equals_sign(char *str, char ***c_env);
 char	**get_existing_var_record(char **env, char *var_key);
 
 int	ft_export(char **args, int fd, char ***c_env)
@@ -22,16 +22,33 @@ int	ft_export(char **args, int fd, char ***c_env)
 
 	(void)fd;
 	if (args[1] == NULL)
-	{
-		printf("Print all declare x-s");
-		return (1);
-	}
+		return handle_no_params(fd, *c_env);
 	i = 1;
 	while (args[i] != NULL)
 	{
 		if (ft_strcmp(get_str_from_symbol(args[i], '='), "\0") == 0)
 			continue ;
-		handle_str_with_equals_sign(&(args[i]), c_env);
+		handle_str_with_equals_sign(args[i], c_env);
+		i++;
+	}
+	return (1);
+}
+
+int	handle_no_params(int fd, char **c_env)
+{
+	int		i;
+	t_var	*var;
+
+	i = 0;
+	while (c_env[i])
+	{
+		var = malloc(sizeof(t_var));
+		if (!var)
+			ft_errors("Malloc error", 1);
+		setup_var(var, c_env[i]);
+		if (write_single_var_line(fd, var, c_env[i]) == -1)
+			return (-1);
+		free_cascade_var(var);
 		i++;
 	}
 	return (1);
@@ -44,7 +61,7 @@ char	*get_str_from_symbol(char *s, char c)
 	return ((char *)ft_memchr(s, c, ft_strlen(s)));
 }
 
-void	handle_str_with_equals_sign(char **str, char ***c_env)
+void	handle_str_with_equals_sign(char *str, char ***c_env)
 {
 	t_var	*var;
 	char	**existing_var_record;
@@ -55,10 +72,8 @@ void	handle_str_with_equals_sign(char **str, char ***c_env)
 	setup_var(var, str);
 	if (!is_valid_var_key(var->key))
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", *str);
-		free(var->key);
-		free(var->value);
-		free(var);
+		printf("minishell: export: `%s': not a valid identifier\n", str);
+		free_cascade_var(var);
 		return ;
 	}
 	existing_var_record = get_existing_var_record(*c_env, var->key);
@@ -66,9 +81,7 @@ void	handle_str_with_equals_sign(char **str, char ***c_env)
 		update_var(existing_var_record, var);
 	else
 		ft_extend_env(c_env, var);
-	free(var->key);
-	free(var->value);
-	free(var);
+	free_cascade_var(var);
 }
 
 char	**get_existing_var_record(char **env, char *var_key)

@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+void	free_cascade_var(t_var *var)
+{
+	free(var->key);
+	var->key = NULL;
+	free(var->value);
+	var->value = NULL;
+	free(var);
+	var = NULL;
+}
+
 void	update_var(char **existing_var_record, t_var *new_var)
 {
 	char	*tmp;
@@ -52,31 +62,31 @@ void	ft_extend_env(char ***env, t_var *new_var)
 	*env = copy;
 }
 
-void	setup_var(t_var *var, char **var_str)
+void	setup_var(t_var *var, char *var_str)
 {
-	if (ft_strcmp(get_str_from_symbol(*var_str, '='), *var_str) == 0)
+	if (ft_strcmp(get_str_from_symbol(var_str, '='), var_str) == 0)
 	{
-		var->key_len = ft_strlen(*var_str);
+		var->key_len = ft_strlen(var_str);
 		var->value_len = 0;
 	}
-	else if (get_str_from_symbol(*var_str, '=') - *var_str + 1
-		== ft_strlen(*var_str))
+	else if (get_str_from_symbol(var_str, '=') - var_str + 1
+		== ft_strlen(var_str))
 	{
-		var->key_len = ft_strlen(*var_str) - 1;
+		var->key_len = ft_strlen(var_str) - 1;
 		var->value_len = 0;
 	}
 	else
 	{
-		var->key_len = (int)(get_str_from_symbol(*var_str, '=') - *var_str);
+		var->key_len = (int)(get_str_from_symbol(var_str, '=') - var_str);
 		var->value_len = (int)
-			(*var_str
-				+ (ft_strlen(*var_str) - 1)
-				- get_str_from_symbol(*var_str, '='));
+			(var_str
+				+ (ft_strlen(var_str) - 1)
+				- get_str_from_symbol(var_str, '='));
 	}
-	var->key = ft_strndup(*var_str, var->key_len);
+	var->key = ft_strndup(var_str, var->key_len);
 	if (!var->key)
 		ft_errors("Malloc error", 1);
-	var->value = ft_strndup(*var_str + var->key_len + 1, var->value_len);
+	var->value = ft_strndup(var_str + var->key_len + 1, var->value_len);
 	if (!var->value)
 		ft_errors("Malloc error", 1);
 }
