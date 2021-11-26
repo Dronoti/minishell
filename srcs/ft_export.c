@@ -22,7 +22,7 @@ int	ft_export(char **args, int fd, char ***c_env)
 
 	(void)fd;
 	if (args[1] == NULL)
-		return handle_no_params(fd, *c_env);
+		return (handle_no_params(fd, *c_env));
 	i = 1;
 	while (args[i] != NULL)
 	{
