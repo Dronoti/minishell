@@ -14,7 +14,6 @@
 
 int		handle_no_params(int fd, char **c_env);
 void	handle_str_with_equals_sign(char *str, char ***c_env);
-char	**get_existing_var_record(char **env, char *var_key);
 
 int	ft_export(char **args, int fd, char ***c_env)
 {
