@@ -40,6 +40,9 @@ SRC = srcs/env.c \
 	srcs/ft_export_helpers.c \
 	srcs/ft_export_helpers2.c \
 	srcs/ft_unset.c \
+	srcs/ft_exit.c \
+	srcs/ft_exit_helpers.c \
+	srcs/ft_isdigit.c \
 	srcs/pipe.c \
 
 OBJ = $(SRC:%.c=%.o)
