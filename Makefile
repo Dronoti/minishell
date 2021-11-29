@@ -34,7 +34,7 @@ SRC = srcs/env.c \
 	srcs/ft_echo.c \
 	srcs/ft_pwd.c \
 	srcs/ft_cd.c \
-	srcs/ft_cd_nullify_preceding_pathname.c \
+	srcs/ft_cd_helpers.c \
 	srcs/ft_env.c \
 	srcs/ft_export.c \
 	srcs/ft_export_helpers.c \

@@ -64,12 +64,12 @@ void	ft_extend_env(char ***env, t_var *new_var)
 
 void	setup_var(t_var *var, char *var_str)
 {
-	if (ft_strcmp(get_str_from_symbol(var_str, '='), var_str) == 0)
+	if (ft_strcmp(get_starting_from_symbol(var_str, '='), var_str) == 0)
 	{
 		var->key_len = ft_strlen(var_str);
 		var->value_len = 0;
 	}
-	else if (get_str_from_symbol(var_str, '=') - var_str + 1
+	else if (get_starting_from_symbol(var_str, '=') - var_str + 1
 		== ft_strlen(var_str))
 	{
 		var->key_len = ft_strlen(var_str) - 1;
@@ -77,11 +77,11 @@ void	setup_var(t_var *var, char *var_str)
 	}
 	else
 	{
-		var->key_len = (int)(get_str_from_symbol(var_str, '=') - var_str);
+		var->key_len = (int)(get_starting_from_symbol(var_str, '=') - var_str);
 		var->value_len = (int)
 			(var_str
 				+ (ft_strlen(var_str) - 1)
-				- get_str_from_symbol(var_str, '='));
+				- get_starting_from_symbol(var_str, '='));
 	}
 	var->key = ft_strndup(var_str, var->key_len);
 	if (!var->key)

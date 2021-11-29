@@ -113,7 +113,7 @@ int		ft_pwd(int fd);
 int		ft_first_ispipe(char *cmd);
 
 int		ft_exit(char **tokens);
-int		ft_cd(char **tokens, int fd);
+int		ft_cd(char **tokens, int fd, char ***env);
 int		ft_env(char **tokens, int fd, char **c_env);
 int		ft_export(char **tokens, int fd, char ***c_env);
 int		ft_unset(char **tokens, int fd, char ***c_env);
@@ -125,7 +125,7 @@ char	**get_existing_var_record(char **env, char *var_key);
 void	update_var(char **existing_var_record, t_var *new_var);
 void	ft_extend_env(char ***env, t_var *new_var);
 int		is_valid_var_key(char *key);
-char	*get_str_from_symbol(char *s, char c);
+char	*get_starting_from_symbol(char *s, char c);
 void	free_cascade_var(t_var *var);
 int		write_single_var_line(int fd, t_var *var, char *var_str);
 int		ft_isdigit(int c);

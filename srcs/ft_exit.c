@@ -89,8 +89,11 @@ int	check_arg1(char *const *args)
 		}
 		if (!ft_isdigit(args[1][i]))
 		{
+			write(2, "minishell: exit: ", ft_strlen("minishell: exit: "));
+			write(2, args[1], ft_strlen(args[1]));
+			write(2, ": numeric argument required\n",
+				ft_strlen(": numeric argument required\n"));
 			g_code = 255;
-			printf("minishell: exit: %s: numeric argument required\n", args[1]);
 			exit(g_code);
 		}
 		i++;

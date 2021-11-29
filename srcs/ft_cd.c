@@ -14,6 +14,9 @@
 
 char	**get_path_splitted(char *const *args);
 char	*construct_abs_path(char **path_splitted, int len);
+void	set_oldpwd_var(char **env);
+void	set_pwd_var(char **const *env, char *path);
+void	err_print_no_such_file_or_dir(char *arg1);
 
 int	traversing_resolve_dots(char **path_splitted)
 {
@@ -38,7 +41,7 @@ int	traversing_resolve_dots(char **path_splitted)
 	return (i);
 }
 
-int	ft_cd(char **args, int fd)
+int	ft_cd(char **args, int fd, char ***env)
 {
 	char	**path_splitted;
 	char	*path;
@@ -52,9 +55,12 @@ int	ft_cd(char **args, int fd)
 	path = construct_abs_path(path_splitted, len);
 	if (chdir(path) != 0)
 	{
+		err_print_no_such_file_or_dir(args[1]);
 		free(path);
 		return (-1);
 	}
+	set_oldpwd_var(*env);
+	set_pwd_var(env, path);
 	free(path);
 	return (1);
 }
@@ -66,18 +72,19 @@ char	*construct_abs_path(char **path_splitted, int len)
 	char	*tmp_path;
 
 	i = 0;
-	path = ft_strndup("/", ft_strlen("/"));
+	path = malloc(sizeof(char));
+	*path = '\0';
 	while (len > 0)
 	{
 		if (path_splitted[i] != NULL)
 		{
 			tmp_path = path;
+			path = ft_strjoin(path, "/");
+			free(tmp_path);
+			tmp_path = path;
 			path = ft_strjoin(path, path_splitted[i]);
 			free(path_splitted[i]);
 			path_splitted[i] = NULL;
-			free(tmp_path);
-			tmp_path = path;
-			path = ft_strjoin(path, "/");
 			free(tmp_path);
 		}
 		i++;

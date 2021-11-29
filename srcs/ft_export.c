@@ -25,7 +25,7 @@ int	ft_export(char **args, int fd, char ***c_env)
 	i = 1;
 	while (args[i] != NULL)
 	{
-		if (ft_strcmp(get_str_from_symbol(args[i], '='), "\0") == 0)
+		if (ft_strcmp(get_starting_from_symbol(args[i], '='), "\0") == 0)
 			continue ;
 		handle_str_with_equals_sign(args[i], c_env);
 		i++;
@@ -53,7 +53,7 @@ int	handle_no_params(int fd, char **c_env)
 	return (1);
 }
 
-char	*get_str_from_symbol(char *s, char c)
+char	*get_starting_from_symbol(char *s, char c)
 {
 	if ((char *)ft_memchr(s, c, ft_strlen(s)) == 0)
 		return ((char *)ft_memchr(s, '\0', ft_strlen(s) + 1));
@@ -71,7 +71,10 @@ void	handle_str_with_equals_sign(char *str, char ***c_env)
 	setup_var(var, str);
 	if (!is_valid_var_key(var->key))
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", str);
+		write(2, "minishell: export: `", ft_strlen("minishell: exit: "));
+		write(2, str, ft_strlen(str));
+		write(2, "': not a valid identifier\n",
+			ft_strlen("': not a valid identifier\n"));
 		free_cascade_var(var);
 		return ;
 	}
