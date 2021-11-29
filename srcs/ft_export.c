@@ -71,7 +71,7 @@ void	handle_str_with_equals_sign(char *str, char ***c_env)
 	setup_var(var, str);
 	if (!is_valid_var_key(var->key))
 	{
-		write(2, "minishell: export: `", ft_strlen("minishell: exit: "));
+		write(2, "minishell: export: `", ft_strlen("minishell: export: `"));
 		write(2, str, ft_strlen(str));
 		write(2, "': not a valid identifier\n",
 			ft_strlen("': not a valid identifier\n"));
