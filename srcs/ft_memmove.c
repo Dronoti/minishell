@@ -17,7 +17,7 @@ static unsigned char	get_src_value(const void *src, size_t i)
 	return (*(unsigned char *)(src + i));
 }
 
-void					*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	if ((dst == 0 && src == 0))
 		return (dst);

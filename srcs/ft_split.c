@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+char	*rewind_char(char *s, char c);
+
 static unsigned long long	get_words_count(char const *s, char c)
 {
 	unsigned long long	word_counter;
@@ -28,7 +30,7 @@ static unsigned long long	get_words_count(char const *s, char c)
 	return (word_counter);
 }
 
-static char					**free_up(unsigned long long i, char **result)
+static char	**free_up(unsigned long long i, char **result)
 {
 	while (i != 0)
 	{
@@ -39,14 +41,14 @@ static char					**free_up(unsigned long long i, char **result)
 	return (0);
 }
 
-static char					*get_word_end(char *s, char c)
+static char	*get_word_end(char *s, char c)
 {
 	if ((char *)ft_memchr(s, c, ft_strlen(s)) == 0)
 		return ((char *)ft_memchr(s, '\0', ft_strlen(s) + 1));
 	return ((char *)ft_memchr(s, c, ft_strlen(s)));
 }
 
-char						**ft_split(char *s, char c)
+char	**ft_split(char *s, char c)
 {
 	unsigned long long	word_counter;
 	unsigned long long	i;
@@ -55,14 +57,15 @@ char						**ft_split(char *s, char c)
 	if (!s)
 		return (0);
 	word_counter = get_words_count(s, c);
-	if (!(result = malloc((word_counter + 1) * sizeof(char *))))
+	result = malloc((word_counter + 1) * sizeof(char *));
+	if (!result)
 		return (0);
 	i = 0;
 	while (i < word_counter)
 	{
-		while (*s == c)
-			s++;
-		if (!(result[i] = malloc((get_word_end(s, c) - s + 1) * sizeof(char))))
+		s = rewind_char(s, c);
+		result[i] = malloc((get_word_end(s, c) - s + 1) * sizeof(char));
+		if (!result[i])
 			return (free_up(i, result));
 		ft_memmove(result[i], s, get_word_end(s, c) - s);
 		result[i][get_word_end(s, c) - s] = '\0';
@@ -72,4 +75,11 @@ char						**ft_split(char *s, char c)
 	}
 	result[word_counter] = 0;
 	return (result);
+}
+
+char	*rewind_char(char *s, char c)
+{
+	while (*s == c)
+		s++;
+	return (s);
 }

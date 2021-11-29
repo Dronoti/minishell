@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int copy_env_vars(char **dst, char *const *src);
+int	copy_env_vars(char **dst, char *const *src);
 
 void	ft_free_env(char **c_env)
 {
@@ -28,18 +28,6 @@ void	ft_free_env(char **c_env)
 		}
 		free(c_env);
 		c_env = NULL;
-	}
-}
-
-void	ft_print_env(char **c_env)
-{
-	int	i;
-
-	i = 0;
-	while (c_env[i])
-	{
-		ft_putendl_fd(c_env[i], 1);
-		i++;
 	}
 }
 
@@ -60,7 +48,8 @@ char	**ft_create_env(char **env)
 	return (copy);
 }
 
-int copy_env_vars(char **dst, char *const *src) {
+int	copy_env_vars(char **dst, char *const *src)
+{
 	int	i;
 
 	i = 0;
@@ -74,7 +63,7 @@ int copy_env_vars(char **dst, char *const *src) {
 		}
 		i++;
 	}
-	return i;
+	return (i);
 }
 
 int	ft_find_key(char *key, char *str)
