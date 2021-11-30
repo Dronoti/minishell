@@ -71,3 +71,13 @@ char	*ft_get_value_env(char *key, char **c_env)
 			value = ft_get_value(c_env[i]);
 	return (value);
 }
+
+int	is_valid_token_next_to_redirect(char *next_token)
+{
+	if (!next_token || !ft_strcmp(next_token, ">")
+		|| !ft_strcmp(next_token, ">>")
+		|| !ft_strcmp(next_token, "<")
+		|| !ft_strcmp(next_token, "<<"))
+		return (0);
+	return (1);
+}

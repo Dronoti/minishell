@@ -23,10 +23,7 @@ int	ft_count_redir_input(char **tokens)
 	{
 		if (!ft_strcmp(tokens[i], "<"))
 		{
-			if (!tokens[i + 1] || !ft_strcmp(tokens[i + 1], ">")
-				|| !ft_strcmp(tokens[i + 1], ">>")
-				|| !ft_strcmp(tokens[i + 1], "<")
-				|| !ft_strcmp(tokens[i + 1], "<<"))
+			if (!is_valid_token_next_to_redirect(tokens[i + 1]))
 			{
 				write(2, "minishell: parse error near `", 29);
 				if (tokens[i + 1])
@@ -86,8 +83,8 @@ char	**ft_init_fd_input(int *fd, char **tokens, int count_redir)
 		if ((!ft_strcmp(tokens[i], "<")) && *fd < 0)
 		{
 			write(2,
-				  "minishell: invalid redirect input: ",
-				  ft_strlen("minishell: invalid redirect input: "));
+				"minishell: invalid redirect input: ",
+				ft_strlen("minishell: invalid redirect input: "));
 			ft_putendl_fd(tokens[i + 1], 2);
 			return (tokens);
 		}

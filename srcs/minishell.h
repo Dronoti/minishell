@@ -149,6 +149,7 @@ void	free_cascade_var(t_var *var);
 int		write_single_var_line(int fd, t_var *var, char *var_str);
 int		ft_isdigit(int c);
 
+int		is_valid_token_next_to_redirect(char *next_token);
 int		ft_check_redirect_input(char ***tokens);
 
 #endif

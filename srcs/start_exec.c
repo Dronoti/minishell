@@ -61,18 +61,26 @@ int	ft_check_builtins(char **tokens, char ***c_env, int fd)
 
 t_fds	select_fds(char ***tokens)
 {
-	t_fds fds;
+	t_fds	fds;
 
 	fds.in_fd = ft_check_redirect_input(tokens);
 	fds.out_fd = ft_check_redirect(tokens);
 	return (fds);
 }
 
+void	close_not_needed_fds(t_fds fds)
+{
+	if (fds.in_fd != 0)
+		close(fds.in_fd);
+	if (fds.out_fd != 1)
+		close(fds.out_fd);
+}
+
 int	ft_start_exec(char ***tokens, char ***c_env, char *cmd, char *prompt)
 {
-	t_fds fds;
-	int	is_bin;
-	int	is_builtins;
+	t_fds	fds;
+	int		is_bin;
+	int		is_builtins;
 
 	fds = select_fds(tokens);
 	if (fds.in_fd < 0 || fds.out_fd < 0)
@@ -81,10 +89,7 @@ int	ft_start_exec(char ***tokens, char ***c_env, char *cmd, char *prompt)
 	is_builtins = ft_check_builtins(*tokens, c_env, fds.out_fd);
 	if (!is_builtins)
 		is_bin = ft_check_bins(*tokens, c_env, fds);
-	if (fds.in_fd != 0)
-		close(fds.in_fd);
-	if (fds.out_fd != 1)
-		close(fds.out_fd);
+	close_not_needed_fds(fds);
 	if (!is_builtins && !is_bin)
 	{
 		write(2, "minishell: command not found: ", 30);

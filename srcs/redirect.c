@@ -23,10 +23,7 @@ int	ft_count_redir(char **tokens)
 	{
 		if (!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>"))
 		{
-			if (!tokens[i + 1] || !ft_strcmp(tokens[i + 1], ">")
-				|| !ft_strcmp(tokens[i + 1], ">>")
-				|| !ft_strcmp(tokens[i + 1], "<")
-				|| !ft_strcmp(tokens[i + 1], "<<"))
+			if (!is_valid_token_next_to_redirect(tokens[i + 1]))
 			{
 				write(2, "minishell: parse error near `", 29);
 				if (tokens[i + 1])
