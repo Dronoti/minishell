@@ -59,10 +59,15 @@ void	ft_free_exit(char ***tokens, char ***c_env, char *cmd, char *prompt)
 	exit(g_code);
 }
 
-void	ft_child_exit(int signum)
+char	*ft_get_value_env(char *key, char **c_env)
 {
-	(void)signum;
-	g_code = 130;
-	write(1, "\n", 1);
-	exit(130);
+	char	*value;
+	int		i;
+
+	value = NULL;
+	i = -1;
+	while (c_env[++i] && !value)
+		if (ft_find_key(key, c_env[i]))
+			value = ft_get_value(c_env[i]);
+	return (value);
 }

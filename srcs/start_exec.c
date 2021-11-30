@@ -6,7 +6,7 @@
 /*   By: bkael <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 19:32:45 by bkael             #+#    #+#             */
-/*   Updated: 2021/11/22 19:33:03 by bkael            ###   ########.fr       */
+/*   Updated: 2021/11/30 19:33:03 by bkael            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,28 @@
 
 int	ft_check_bins(char **tokens, char ***c_env, int fd)
 {
-	(void)tokens;
-	(void)c_env;
-	(void)fd;
+	int		i;
+	t_bin	param;
+
+	param.value = ft_get_value_env("PATH", *c_env);
+	if (!param.value)
+		return (0);
+	param.paths = ft_split(param.value, ':');
+	if (!param.paths)
+		return (ft_print_error("Malloc error", 1));
+	i = -1;
+	while (param.paths[++i])
+	{
+		if (ft_is_start_str(param.paths[i], tokens[0]))
+			param.value = ft_strndup(tokens[0], ft_strlen(tokens[0]));
+		else
+			param.value = ft_join_path(&param.paths[i], tokens[0]);
+		if (lstat(param.value, &param.buf) < 0)
+			free(param.value);
+		else
+			return (ft_check_exec(&param, tokens, *c_env, fd));
+	}
+	ft_free_env(param.paths);
 	return (0);
 }
 

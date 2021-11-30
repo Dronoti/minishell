@@ -88,6 +88,7 @@ char	**ft_init_fd(int *fd, char **tokens, int count_redir)
 		{
 			write(2, "minishell: invalid redirect: ", 29);
 			ft_putendl_fd(tokens[i + 1], 2);
+			g_code = 1;
 			return (tokens);
 		}
 		if ((!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>")))

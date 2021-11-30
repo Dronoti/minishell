@@ -19,13 +19,6 @@ void	ft_child_handler(int signum)
 	write(1, "\n", 1);
 }
 
-void	ft_child_quit(int signum)
-{
-	(void)signum;
-	g_code = 131;
-	ft_putendl_fd("Quit", 1);
-}
-
 void	ft_handler(int signum)
 {
 	(void)signum;
@@ -43,9 +36,10 @@ void	ft_init_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	ft_init_child_signals(void)
+void	ft_child_exit(int signum)
 {
-	rl_catch_signals = 0;
-	signal(SIGINT, ft_child_handler);
-	signal(SIGQUIT, ft_child_quit);
+	(void)signum;
+	g_code = 130;
+	write(1, "\n", 1);
+	exit(130);
 }

@@ -44,12 +44,13 @@ SRC = srcs/env.c \
 	srcs/ft_exit_helpers.c \
 	srcs/ft_isdigit.c \
 	srcs/pipe.c \
+	srcs/bin.c \
 
 OBJ = $(SRC:%.c=%.o)
 
-FLAGS = -Wall -Wextra -Werror -I /Users/timur/.brew/opt/readline/include
+FLAGS = -Wall -Wextra -Werror -I ./readline/8.1.1/include
 
-READLINE = -lreadline -L /Users/timur/.brew/opt/readline/lib
+READLINE = -lreadline -L ./readline/8.1.1/lib
 
 all: $(NAME)
 

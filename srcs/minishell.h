@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -47,6 +49,14 @@ typedef struct s_var
 	char	*value;
 }	t_var;
 
+typedef struct s_bin
+{
+	pid_t		pid;
+	char		**paths;
+	char		*value;
+	struct stat	buf;
+}				t_bin;
+
 void	ft_errors(char *msg, int code);
 int		ft_strlen(char *s);
 void	ft_putendl_fd(char *s, int fd);
@@ -61,7 +71,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
 char	**ft_create_env(char **env);
 void	ft_free_env(char **c_env);
-void	ft_print_env(char **c_env);
+char	*ft_get_value_env(char *key, char **c_env);
 void	ft_init_signals(void);
 void	ft_free_all(char *prompt, char **c_env, char *cmd);
 void	ft_parser(char **cmd, char ***c_env, char *prompt);
@@ -100,8 +110,6 @@ int		ft_check_pipe(char ***tokens, char ***c_env, char *cmd, char *prompt);
 t_p		ft_init_arg(char ***tokens, char ***c_env, char *cmd, char *prompt);
 void	ft_free_exit(char ***tokens, char ***c_env, char *cmd, char *prompt);
 void	ft_child_handler(int signum);
-void	ft_init_child_signals(void);
-void	ft_child_quit(int signum);
 void	ft_child_exit(int signum);
 int		ft_init_pipes(int *fd1, int *fd2);
 int		ft_run_pipe(t_p *arg);
@@ -111,6 +119,11 @@ int		ft_write_error(void);
 int		ft_echo(char **tokens, int fd);
 int		ft_pwd(int fd);
 int		ft_first_ispipe(char *cmd);
+char	*ft_join_path(char **s1, char *s2);
+int		ft_is_start_str(char *str1, char *str2);
+int		ft_print_error(char *msg, int code);
+int		ft_check_exec(t_bin *param, char **tokens, char **c_env, int fd);
+int		ft_start_bin(t_bin *param, char **tokens, char **c_env, int fd);
 
 int		ft_exit(char **tokens);
 int		ft_cd(char **tokens, int fd, char ***env);

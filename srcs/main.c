@@ -70,8 +70,7 @@ int	main(int argc, char **argv, char **env)
 	char	*prompt;
 	char	**c_env;
 
-	(void)argv;
-	if (argc != 1)
+	if (argv[1] || argc != 1)
 		ft_errors("Error: Too many arguments", 1);
 	c_env = ft_create_env(env);
 	while (1)

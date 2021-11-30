@@ -69,7 +69,7 @@ int	ft_run_pipe(t_p *arg)
 			arg->last = 0;
 		else
 			arg->last = 1;
-		signal(SIGINT, SIG_IGN);
+		signal(SIGINT, ft_child_handler);
 		arg->pid = fork();
 		if (arg->pid == -1)
 			return (-1);
@@ -129,5 +129,6 @@ int	ft_check_pipe(char ***tokens, char ***c_env, char *cmd, char *prompt)
 		wait(&g_code);
 	ft_next_pipe(arg.fd1, arg.fd2, 0);
 	dup2(arg.save_in, 0);
+	close(arg.save_in);
 	return (1);
 }

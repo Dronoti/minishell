@@ -124,3 +124,21 @@ char	*ft_strjoin(char *s1, char *s2)
 	join[i] = '\0';
 	return (join);
 }
+
+char	*ft_join_path(char **s1, char *s2)
+{
+	if (!(*s1) || !s2)
+		return (NULL);
+	if (ft_strlen(*s1) && (*s1)[ft_strlen(*s1) - 1] == '/')
+	{
+		if (s2[0] == '/')
+			return (ft_strjoin(*s1, s2 + 1));
+		return (ft_strjoin(*s1, s2));
+	}
+	else
+	{
+		if (s2[0] != '/')
+			*s1 = ft_join_char(*s1, '/');
+		return (ft_strjoin(*s1, s2));
+	}
+}
