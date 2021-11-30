@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	ft_check_bins(char **tokens, char ***c_env, int fd)
+int	ft_check_bins(char **tokens, char ***c_env, t_fds fds)
 {
 	int		i;
 	t_bin	param;
@@ -33,7 +33,7 @@ int	ft_check_bins(char **tokens, char ***c_env, int fd)
 		if (lstat(param.value, &param.buf) < 0)
 			free(param.value);
 		else
-			return (ft_check_exec(&param, tokens, *c_env, fd));
+			return (ft_check_exec(&param, tokens, *c_env, fds));
 	}
 	ft_free_env(param.paths);
 	return (0);
@@ -59,21 +59,32 @@ int	ft_check_builtins(char **tokens, char ***c_env, int fd)
 	return (0);
 }
 
+t_fds	select_fds(char ***tokens)
+{
+	t_fds fds;
+
+	fds.in_fd = ft_check_redirect_input(tokens);
+	fds.out_fd = ft_check_redirect(tokens);
+	return (fds);
+}
+
 int	ft_start_exec(char ***tokens, char ***c_env, char *cmd, char *prompt)
 {
-	int	fd;
+	t_fds fds;
 	int	is_bin;
 	int	is_builtins;
 
-	fd = ft_check_redirect(tokens);
-	if (fd < 0)
+	fds = select_fds(tokens);
+	if (fds.in_fd < 0 || fds.out_fd < 0)
 		return (1);
 	is_bin = 0;
-	is_builtins = ft_check_builtins(*tokens, c_env, fd);
+	is_builtins = ft_check_builtins(*tokens, c_env, fds.out_fd);
 	if (!is_builtins)
-		is_bin = ft_check_bins(*tokens, c_env, fd);
-	if (fd != 1)
-		close(fd);
+		is_bin = ft_check_bins(*tokens, c_env, fds);
+	if (fds.in_fd != 0)
+		close(fds.in_fd);
+	if (fds.out_fd != 1)
+		close(fds.out_fd);
 	if (!is_builtins && !is_bin)
 	{
 		write(2, "minishell: command not found: ", 30);

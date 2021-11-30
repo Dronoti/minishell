@@ -19,6 +19,7 @@ SRC = srcs/env.c \
 	srcs/join.c \
 	srcs/main.c \
 	srcs/parser.c \
+	srcs/redirect_input.c \
 	srcs/redirect.c \
 	srcs/signals.c \
 	srcs/start_exec.c \

@@ -57,6 +57,12 @@ typedef struct s_bin
 	struct stat	buf;
 }				t_bin;
 
+typedef struct s_fds
+{
+	int		in_fd;
+	int		out_fd;
+}				t_fds;
+
 void	ft_errors(char *msg, int code);
 int		ft_strlen(char *s);
 void	ft_putendl_fd(char *s, int fd);
@@ -105,7 +111,7 @@ int		ft_count_redir(char **tokens);
 char	**ft_init_fd(int *fd, char **tokens, int count_redir);
 char	**ft_delete_redir(char **tokens, int count_redir);
 int		ft_check_builtins(char **tokens, char ***c_env, int fd);
-int		ft_check_bins(char **tokens, char ***c_env, int fd);
+int		ft_check_bins(char **tokens, char ***c_env, t_fds fds);
 int		ft_check_pipe(char ***tokens, char ***c_env, char *cmd, char *prompt);
 t_p		ft_init_arg(char ***tokens, char ***c_env, char *cmd, char *prompt);
 void	ft_free_exit(char ***tokens, char ***c_env, char *cmd, char *prompt);
@@ -122,8 +128,8 @@ int		ft_first_ispipe(char *cmd);
 char	*ft_join_path(char **s1, char *s2);
 int		ft_is_start_str(char *str1, char *str2);
 int		ft_print_error(char *msg, int code);
-int		ft_check_exec(t_bin *param, char **tokens, char **c_env, int fd);
-int		ft_start_bin(t_bin *param, char **tokens, char **c_env, int fd);
+int		ft_check_exec(t_bin *param, char **tokens, char **c_env, t_fds fds);
+int		ft_start_bin(t_bin *param, char **tokens, char **c_env, t_fds fds);
 
 int		ft_exit(char **tokens);
 int		ft_cd(char **tokens, int fd, char ***env);
@@ -142,5 +148,7 @@ char	*get_starting_from_symbol(char *s, char c);
 void	free_cascade_var(t_var *var);
 int		write_single_var_line(int fd, t_var *var, char *var_str);
 int		ft_isdigit(int c);
+
+int		ft_check_redirect_input(char ***tokens);
 
 #endif

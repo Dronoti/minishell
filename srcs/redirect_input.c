@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	ft_count_redir(char **tokens)
+int	ft_count_redir_input(char **tokens)
 {
 	int	count;
 	int	i;
@@ -21,7 +21,7 @@ int	ft_count_redir(char **tokens)
 	count = 0;
 	while (tokens[++i])
 	{
-		if (!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>"))
+		if (!ft_strcmp(tokens[i], "<"))
 		{
 			if (!tokens[i + 1] || !ft_strcmp(tokens[i + 1], ">")
 				|| !ft_strcmp(tokens[i + 1], ">>")
@@ -43,7 +43,7 @@ int	ft_count_redir(char **tokens)
 	return (count);
 }
 
-char	**ft_delete_redir(char **tokens, int count_redir)
+char	**ft_delete_redir_input(char **tokens, int count_redir)
 {
 	int		i;
 	int		count_tok;
@@ -57,7 +57,7 @@ char	**ft_delete_redir(char **tokens, int count_redir)
 	count_tok = 0;
 	while (tokens[++i] && copy)
 	{
-		if (!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>"))
+		if (!ft_strcmp(tokens[i], "<"))
 			i++;
 		else
 		{
@@ -72,7 +72,7 @@ char	**ft_delete_redir(char **tokens, int count_redir)
 	return (copy);
 }
 
-char	**ft_init_fd(int *fd, char **tokens, int count_redir)
+char	**ft_init_fd_input(int *fd, char **tokens, int count_redir)
 {
 	int	i;
 	int	r;
@@ -81,36 +81,34 @@ char	**ft_init_fd(int *fd, char **tokens, int count_redir)
 	r = count_redir;
 	while (tokens[++i])
 	{
-		if (!ft_strcmp(tokens[i], ">"))
-			*fd = open(tokens[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
-		else if (!ft_strcmp(tokens[i], ">>"))
-			*fd = open(tokens[i + 1], O_RDWR | O_CREAT | O_APPEND, 0644);
-		if ((!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>"))
-			&& *fd < 0)
+		if (!ft_strcmp(tokens[i], "<"))
+			*fd = open(tokens[i + 1], O_RDONLY, 0444);
+		if ((!ft_strcmp(tokens[i], "<")) && *fd < 0)
 		{
-			write(2, "minishell: invalid redirect: ", 29);
+			write(2,
+				  "minishell: invalid redirect input: ",
+				  ft_strlen("minishell: invalid redirect input: "));
 			ft_putendl_fd(tokens[i + 1], 2);
-			g_code = 1;
 			return (tokens);
 		}
-		if ((!ft_strcmp(tokens[i], ">") || !ft_strcmp(tokens[i], ">>")))
+		if (!ft_strcmp(tokens[i], "<"))
 			if (--r)
 				close(*fd);
 	}
-	return (ft_delete_redir(tokens, count_redir));
+	return (ft_delete_redir_input(tokens, count_redir));
 }
 
-int	ft_check_redirect(char ***tokens)
+int	ft_check_redirect_input(char ***tokens)
 {
 	int	fd;
 	int	count_redir;
 
-	count_redir = ft_count_redir(*tokens);
-	fd = 1;
+	count_redir = ft_count_redir_input(*tokens);
+	fd = 0;
 	if (count_redir == -1)
 		return (-1);
 	if (count_redir)
-		*tokens = ft_init_fd(&fd, *tokens, count_redir);
+		*tokens = ft_init_fd_input(&fd, *tokens, count_redir);
 	if (!*tokens)
 	{
 		ft_putendl_fd("Malloc error", 2);

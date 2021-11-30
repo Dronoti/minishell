@@ -33,7 +33,7 @@ int	ft_is_start_str(char *str1, char *str2)
 	return (1);
 }
 
-int	ft_start_bin(t_bin *param, char **tokens, char **c_env, int fd)
+int	ft_start_bin(t_bin *param, char **tokens, char **c_env, t_fds fds)
 {
 	param->pid = fork();
 	signal(SIGINT, ft_child_handler);
@@ -45,8 +45,10 @@ int	ft_start_bin(t_bin *param, char **tokens, char **c_env, int fd)
 	}
 	else if (!param->pid)
 	{
-		if (fd != 1)
-			dup2(fd, 1);
+		if (fds.in_fd != 0)
+			dup2(fds.in_fd, 0);
+		if (fds.out_fd != 1)
+			dup2(fds.out_fd, 1);
 		execve(param->value, tokens, c_env);
 	}
 	wait(&param->pid);
@@ -55,7 +57,7 @@ int	ft_start_bin(t_bin *param, char **tokens, char **c_env, int fd)
 	return (1);
 }
 
-int	ft_check_exec(t_bin *param, char **tokens, char **c_env, int fd)
+int	ft_check_exec(t_bin *param, char **tokens, char **c_env, t_fds fds)
 {
 	ft_free_env(param->paths);
 	if (!(param->buf.st_mode & S_IFREG))
@@ -73,5 +75,5 @@ int	ft_check_exec(t_bin *param, char **tokens, char **c_env, int fd)
 		g_code = 126;
 		return (-1);
 	}
-	return (ft_start_bin(param, tokens, c_env, fd));
+	return (ft_start_bin(param, tokens, c_env, fds));
 }
