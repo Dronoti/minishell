@@ -76,30 +76,26 @@ char	*ft_replace_env(char *cmd, char **c_env)
 	return (new);
 }
 
+void	print_error_and_set_g_code(char *msg, int g_code_value)
+{
+	ft_putendl_fd(msg, 2);
+	g_code = g_code_value;
+}
+
 void	ft_parser(char **cmd, char ***c_env, char *prompt)
 {
 	char	**tokens;
 
 	if (ft_isvalid_quotes(*cmd) || ft_isvalid_pipes_braces(*cmd))
-	{
-		ft_putendl_fd("Error: Invalid command line", 2);
-		g_code = 1;
-		return ;
-	}
+		return (print_error_and_set_g_code("Error: Invalid command line", 1));
 	*cmd = ft_replace_env(*cmd, *c_env);
 	if (!*cmd)
-	{
-		ft_putendl_fd("Malloc error", 2);
-		g_code = 1;
-		return ;
-	}
+		return (print_error_and_set_g_code("Malloc error", 1));
 	tokens = ft_create_tokens(*cmd);
 	if (!tokens)
-	{
-		ft_putendl_fd("Malloc error", 2);
-		g_code = 1;
-		return ;
-	}
+		return (print_error_and_set_g_code("Malloc error", 1));
+	if (!ft_check_heredoc(tokens))
+		return (print_error_and_set_g_code("Malloc error", 1));
 	if (!ft_check_pipe(&tokens, c_env, *cmd, prompt))
 		g_code = 0;
 	ft_free_tokens(tokens);

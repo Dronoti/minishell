@@ -150,5 +150,6 @@ int		ft_isdigit(int c);
 
 int		is_valid_token_next_to_redirect(char *next_token);
 int		ft_check_redirect_input(char ***tokens);
+int		ft_check_heredoc(char **tokens);
 
 #endif

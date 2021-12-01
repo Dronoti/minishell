@@ -19,6 +19,7 @@ SRC = srcs/env.c \
 	srcs/join.c \
 	srcs/main.c \
 	srcs/parser.c \
+	srcs/ft_check_heredoc.c \
 	srcs/redirect_input.c \
 	srcs/redirect.c \
 	srcs/signals.c \

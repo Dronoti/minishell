@@ -21,7 +21,7 @@ int	ft_count_redir_input(char **tokens)
 	count = 0;
 	while (tokens[++i])
 	{
-		if (!ft_strcmp(tokens[i], "<"))
+		if (!ft_strcmp(tokens[i], "<") || !ft_strcmp(tokens[i], "<<"))
 		{
 			if (!is_valid_token_next_to_redirect(tokens[i + 1]))
 			{
@@ -54,7 +54,7 @@ char	**ft_delete_redir_input(char **tokens, int count_redir)
 	count_tok = 0;
 	while (tokens[++i] && copy)
 	{
-		if (!ft_strcmp(tokens[i], "<"))
+		if (!ft_strcmp(tokens[i], "<") || !ft_strcmp(tokens[i], "<<"))
 			i++;
 		else
 		{
@@ -80,7 +80,10 @@ char	**ft_init_fd_input(int *fd, char **tokens, int count_redir)
 	{
 		if (!ft_strcmp(tokens[i], "<"))
 			*fd = open(tokens[i + 1], O_RDONLY, 0444);
-		if ((!ft_strcmp(tokens[i], "<")) && *fd < 0)
+		else if (!ft_strcmp(tokens[i], "<<"))
+			*fd = open(".tmp", O_RDONLY, 0444);
+		if ((!ft_strcmp(tokens[i], "<") || !ft_strcmp(tokens[i], "<<"))
+			&& *fd < 0)
 		{
 			write(2,
 				"minishell: invalid redirect input: ",
@@ -88,7 +91,7 @@ char	**ft_init_fd_input(int *fd, char **tokens, int count_redir)
 			ft_putendl_fd(tokens[i + 1], 2);
 			return (tokens);
 		}
-		if (!ft_strcmp(tokens[i], "<"))
+		if (!ft_strcmp(tokens[i], "<") || !ft_strcmp(tokens[i], "<<"))
 			if (--r)
 				close(*fd);
 	}
