@@ -37,6 +37,7 @@ int	ft_start_bin(t_bin *param, char **tokens, char **c_env, t_fds fds)
 {
 	param->pid = fork();
 	signal(SIGINT, ft_child_handler);
+	signal(SIGQUIT, ft_child_handler);
 	if (param->pid < 0)
 	{
 		if (param->value)

@@ -52,7 +52,6 @@ void	unset_var(char **existing_var_record, char ***env)
 	char	**copy;
 	int		i;
 
-	g_code = 0;
 	copy = (char **)malloc(sizeof(char *) * get_len(*env));
 	if (!copy)
 		ft_errors("Malloc error", 1);

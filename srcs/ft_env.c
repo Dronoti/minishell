@@ -19,7 +19,8 @@ int	ft_env(char **args, int fd, char **c_env)
 	if (args[1] != NULL)
 	{
 		ft_putendl_fd("env: Arguments are not allowed", fd);
-		return (1);
+		g_code = 127;
+		return (-1);
 	}
 	i = 0;
 	while (c_env[i] != NULL)

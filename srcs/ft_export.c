@@ -12,14 +12,15 @@
 
 #include "minishell.h"
 
-int		handle_no_params(int fd, char **c_env);
-void	handle_str_with_equals_sign(char *str, char ***c_env);
+int	handle_no_params(int fd, char **c_env);
+int	handle_str_with_equals_sign(char *str, char ***c_env);
 
 int	ft_export(char **args, int fd, char ***c_env)
 {
 	int	i;
+	int	exit;
 
-	(void)fd;
+	exit = 1;
 	if (args[1] == NULL)
 		return (handle_no_params(fd, *c_env));
 	i = 1;
@@ -27,10 +28,11 @@ int	ft_export(char **args, int fd, char ***c_env)
 	{
 		if (ft_strcmp(get_starting_from_symbol(args[i], '='), "\0") == 0)
 			continue ;
-		handle_str_with_equals_sign(args[i], c_env);
+		if (handle_str_with_equals_sign(args[i], c_env))
+			exit = -1;
 		i++;
 	}
-	return (1);
+	return (exit);
 }
 
 int	handle_no_params(int fd, char **c_env)
@@ -60,7 +62,7 @@ char	*get_starting_from_symbol(char *s, char c)
 	return ((char *)ft_memchr(s, c, ft_strlen(s)));
 }
 
-void	handle_str_with_equals_sign(char *str, char ***c_env)
+int	handle_str_with_equals_sign(char *str, char ***c_env)
 {
 	t_var	*var;
 	char	**existing_var_record;
@@ -76,7 +78,8 @@ void	handle_str_with_equals_sign(char *str, char ***c_env)
 		write(2, "': not a valid identifier\n",
 			ft_strlen("': not a valid identifier\n"));
 		free_cascade_var(var);
-		return ;
+		g_code = 1;
+		return (1);
 	}
 	existing_var_record = get_existing_var_record(*c_env, var->key);
 	if (existing_var_record)
@@ -84,6 +87,7 @@ void	handle_str_with_equals_sign(char *str, char ***c_env)
 	else
 		ft_extend_env(c_env, var);
 	free_cascade_var(var);
+	return (0);
 }
 
 char	**get_existing_var_record(char **env, char *var_key)

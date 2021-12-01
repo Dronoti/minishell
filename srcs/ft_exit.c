@@ -24,7 +24,6 @@ int	ft_exit(char **args)
 	int			first_arg_len;
 	long long	result;
 
-	g_code = 0;
 	write(2, "exit\n", ft_strlen("exit\n"));
 	if (args[1] == NULL)
 		exit(g_code);

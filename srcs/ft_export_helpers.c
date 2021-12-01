@@ -46,7 +46,6 @@ void	ft_extend_env(char ***env, t_var *new_var)
 	int		i;
 	char	**new_var_str;
 
-	g_code = 0;
 	i = 0;
 	while ((*env)[i])
 		i++;
