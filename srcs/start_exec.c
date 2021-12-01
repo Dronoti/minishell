@@ -99,7 +99,7 @@ int	ft_start_exec(char ***tokens, char ***c_env, char *cmd, char *prompt)
 	}
 	if (is_builtins == -2)
 		ft_free_exit(tokens, c_env, cmd, prompt);
-	if (is_builtins == -1 || is_bin == -1)
+	if (is_builtins == -1 || is_bin)
 		return (1);
 	return (0);
 }

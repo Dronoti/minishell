@@ -35,7 +35,6 @@ void	ft_run_fork(t_p *arg, char **tokens, int st)
 {
 	int		i;
 
-	signal(SIGINT, ft_child_exit);
 	if (arg->start)
 		dup2(arg->fd1[0], 0);
 	if (!arg->last)
@@ -69,7 +68,7 @@ int	ft_run_pipe(t_p *arg)
 			arg->last = 0;
 		else
 			arg->last = 1;
-		signal(SIGINT, ft_child_handler);
+		signal(SIGINT, SIG_IGN);
 		arg->pid = fork();
 		if (arg->pid == -1)
 			return (-1);
@@ -120,13 +119,12 @@ int	ft_check_pipe(char ***tokens, char ***c_env, char *cmd, char *prompt)
 	arg.children = ft_run_pipe(&arg);
 	if (arg.children == -1)
 	{
-		ft_putendl_fd("Fork error", 2);
 		ft_next_pipe(arg.fd1, arg.fd2, 0);
-		g_code = 1;
-		return (1);
+		return (ft_print_error("Fork error", 1));
 	}
 	while (arg.children--)
 		wait(&g_code);
+	g_code = WEXITSTATUS(g_code);
 	ft_next_pipe(arg.fd1, arg.fd2, 0);
 	dup2(arg.save_in, 0);
 	close(arg.save_in);

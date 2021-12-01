@@ -51,7 +51,8 @@ int	ft_start_bin(t_bin *param, char **tokens, char **c_env, t_fds fds)
 			dup2(fds.out_fd, 1);
 		execve(param->value, tokens, c_env);
 	}
-	wait(&param->pid);
+	wait(&g_code);
+	g_code = WEXITSTATUS(g_code);
 	if (param->value)
 		free(param->value);
 	return (1);

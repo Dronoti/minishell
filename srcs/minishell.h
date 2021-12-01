@@ -116,7 +116,6 @@ int		ft_check_pipe(char ***tokens, char ***c_env, char *cmd, char *prompt);
 t_p		ft_init_arg(char ***tokens, char ***c_env, char *cmd, char *prompt);
 void	ft_free_exit(char ***tokens, char ***c_env, char *cmd, char *prompt);
 void	ft_child_handler(int signum);
-void	ft_child_exit(int signum);
 int		ft_init_pipes(int *fd1, int *fd2);
 int		ft_run_pipe(t_p *arg);
 void	ft_run_fork(t_p *arg, char **tokens, int st);
