@@ -57,8 +57,7 @@ void	set_pwd_var(char **const *env, char *path)
 		update_var(get_existing_var_record(*env, "PWD"), var);
 		free(tmp);
 	}
-	free(var);
-	var = NULL;
+	free_cascade_var(var);
 }
 
 void	set_oldpwd_var(char **env)
@@ -79,6 +78,5 @@ void	set_oldpwd_var(char **env)
 		var->key_len = ft_strlen(var->key);
 		update_var(get_existing_var_record(env, "OLDPWD"), var);
 	}
-	free(var);
-	var = NULL;
+	free_cascade_var(var);
 }

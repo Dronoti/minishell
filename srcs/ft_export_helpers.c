@@ -44,7 +44,7 @@ void	ft_extend_env(char ***env, t_var *new_var)
 {
 	char	**copy;
 	int		i;
-	char	**new_var_str;
+	char	*new_var_str;
 
 	i = 0;
 	while ((*env)[i])
@@ -53,10 +53,10 @@ void	ft_extend_env(char ***env, t_var *new_var)
 	if (!copy)
 		ft_errors("Malloc error", 1);
 	i = copy_env_vars(copy, *env);
-	new_var_str = malloc(sizeof(char *));
-	update_var(new_var_str, new_var);
+	new_var_str = malloc(sizeof(char));
+	update_var(&new_var_str, new_var);
 	ft_free_env(*env);
-	copy[i] = *new_var_str;
+	copy[i] = new_var_str;
 	copy[i + 1] = NULL;
 	*env = copy;
 }
@@ -100,7 +100,10 @@ int	is_valid_var_key(char *key)
 	while (key[i] != '\0')
 	{
 		if (key[i] == '_')
+		{
+			i++;
 			continue ;
+		}
 		if (key[i] < '0' || (key[i] > '9' && key[i] < 'A'))
 			return (0);
 		if ((key[i] > 'Z' && key[i] < 'a') || key[i] > 'z')
