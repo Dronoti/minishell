@@ -42,6 +42,8 @@ char	*ft_strndup(char *s1, int n)
 	int		len;
 
 	len = 0;
+	if (!s1)
+		return (NULL);
 	while (s1[len])
 		len++;
 	if (n < len)

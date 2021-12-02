@@ -52,6 +52,7 @@ typedef struct s_var
 typedef struct s_bin
 {
 	pid_t		pid;
+	int			i;
 	char		**paths;
 	char		*value;
 	struct stat	buf;
