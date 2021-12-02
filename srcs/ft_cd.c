@@ -47,6 +47,11 @@ int	ft_cd(char **args, int fd, char ***env)
 	char	*path;
 	int		len;
 
+	if (!ft_strcmp("/", args[1]))
+	{
+		chdir("/");
+		return (1);
+	}
 	(void) fd;
 	path_splitted = get_path_splitted(args);
 	if (!path_splitted)
