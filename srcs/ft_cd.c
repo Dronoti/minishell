@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-char	**get_path_splitted(char *const *args);
-char	*construct_abs_path(char **path_splitted, int len);
-void	set_oldpwd_var(char **env);
-void	set_pwd_var(char **const *env, char *path);
-void	err_print_no_such_file_or_dir(char *arg1);
-
 int	traversing_resolve_dots(char **path_splitted)
 {
 	int	i;
@@ -47,11 +41,6 @@ int	ft_cd(char **args, int fd, char ***env)
 	char	*path;
 	int		len;
 
-	if (!ft_strcmp("/", args[1]))
-	{
-		chdir("/");
-		return (1);
-	}
 	(void) fd;
 	path_splitted = get_path_splitted(args);
 	if (!path_splitted)
@@ -72,31 +61,9 @@ int	ft_cd(char **args, int fd, char ***env)
 
 char	*construct_abs_path(char **path_splitted, int len)
 {
-	int		i;
-	char	*path;
-	char	*tmp_path;
-
-	i = 0;
-	path = malloc(sizeof(char));
-	*path = '\0';
-	while (len > 0)
-	{
-		if (path_splitted[i] != NULL)
-		{
-			tmp_path = path;
-			path = ft_strjoin(path, "/");
-			free(tmp_path);
-			tmp_path = path;
-			path = ft_strjoin(path, path_splitted[i]);
-			free(path_splitted[i]);
-			path_splitted[i] = NULL;
-			free(tmp_path);
-		}
-		i++;
-		len--;
-	}
-	free(path_splitted);
-	return (path);
+	if (is_empty(path_splitted, len))
+		return (construct_root_path(path_splitted));
+	return (constract_non_root_path(path_splitted, len));
 }
 
 char	*get_path_raw(char *const *args, char *cwd)

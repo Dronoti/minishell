@@ -155,5 +155,15 @@ int		ft_check_heredoc(char **tokens, char **c_env);
 char	*ft_heredoc_replace_vars(char *cmd, char **c_env);
 void	write_tmp_heredoc_file(char *heredoc);
 int		is_it_quoted(char *raw_delimiter);
+void	make_free(char **var);
+char	*construct_root_path(char **path_splitted);
+char	*constract_non_root_path(char **path_splitted, int len);
+int		is_empty(char **path_splitted, int len);
+
+char	**get_path_splitted(char *const *args);
+char	*construct_abs_path(char **path_splitted, int len);
+void	set_oldpwd_var(char **env);
+void	set_pwd_var(char **const *env, char *path);
+void	err_print_no_such_file_or_dir(char *arg1);
 
 #endif

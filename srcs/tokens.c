@@ -76,7 +76,7 @@ void	ft_delete_quotes(char **token, int len, int n, char **tokens)
 	int		i;
 	char	c;
 
-	if (!token || !*token || (n > 0 && strcmp(tokens[n - 1], "<<") == 0))
+	if (!token || !*token || (n > 0 && ft_strcmp(tokens[n - 1], "<<") == 0))
 		return ;
 	i = 0;
 	while ((*token)[i])
