@@ -71,12 +71,12 @@ char	**ft_free_tokens(char **tokens)
 	return (NULL);
 }
 
-void	ft_delete_quotes(char **token, int len)
+void	ft_delete_quotes(char **token, int len, int n, char **tokens)
 {
 	int		i;
 	char	c;
 
-	if (!token || !*token)
+	if (!token || !*token || (n > 0 && strcmp(tokens[n - 1], "<<") == 0))
 		return ;
 	i = 0;
 	while ((*token)[i])
@@ -115,7 +115,7 @@ char	**ft_create_tokens(char *cmd)
 			i++;
 		len = ft_len_token(&cmd[i]);
 		tokens[j] = ft_strndup(&cmd[i], len);
-		ft_delete_quotes(&tokens[j], len);
+		ft_delete_quotes(&tokens[j], len, j, tokens);
 		if (!tokens[j])
 			return (ft_free_tokens(tokens));
 		i += len;

@@ -94,7 +94,7 @@ void	ft_parser(char **cmd, char ***c_env, char *prompt)
 	tokens = ft_create_tokens(*cmd);
 	if (!tokens)
 		return (print_error_and_set_g_code("Malloc error", 1));
-	if (!ft_check_heredoc(tokens))
+	if (!ft_check_heredoc(tokens, *c_env))
 		return (print_error_and_set_g_code("Malloc error", 1));
 	if (!ft_check_pipe(&tokens, c_env, *cmd, prompt))
 		g_code = 0;

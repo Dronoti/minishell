@@ -102,7 +102,7 @@ int		ft_count_tokens(char *cmd);
 int		ft_len_token(char *cmd);
 int		ft_isspec_char(char *str);
 char	**ft_free_tokens(char **tokens);
-void	ft_delete_quotes(char **token, int len);
+void	ft_delete_quotes(char **token, int len, int n, char **tokens);
 char	*ft_strjoin(char *s1, char *s2);
 void	ft_remove_char(char **token, int i, int len);
 int		ft_start_exec(char ***tokens, char ***c_env, char *cmd, char *prompt);
@@ -151,6 +151,9 @@ int		ft_isdigit(int c);
 
 int		is_valid_token_next_to_redirect(char *next_token);
 int		ft_check_redirect_input(char ***tokens);
-int		ft_check_heredoc(char **tokens);
+int		ft_check_heredoc(char **tokens, char **c_env);
+char	*ft_heredoc_replace_vars(char *cmd, char **c_env);
+void	write_tmp_heredoc_file(char *heredoc);
+int		is_it_quoted(char *raw_delimiter);
 
 #endif

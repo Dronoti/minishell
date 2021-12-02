@@ -42,11 +42,10 @@ void	make_free(char **var)
 	*var = NULL;
 }
 
-int	read_heredoc(char *delimiter)
+int	read_heredoc(char *delimiter, char **c_env, int is_quoted)
 {
 	char	*input;
 	char	*heredoc;
-	int		fd;
 
 	heredoc = NULL;
 	while (1)
@@ -64,17 +63,18 @@ int	read_heredoc(char *delimiter)
 		if (!heredoc)
 			return (0);
 	}
-	fd = open(".tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	write(fd, heredoc, ft_strlen(heredoc));
-	close(fd);
+	if (!is_quoted)
+		heredoc = ft_heredoc_replace_vars(heredoc, c_env);
+	write_tmp_heredoc_file(heredoc);
 	free(heredoc);
 	return (1);
 }
 
-int	ft_check_heredoc(char **tokens)
+int	ft_check_heredoc(char **tokens, char **c_env)
 {
 	int		i;
 	char	*delimiter;
+	int		is_quoted;
 
 	i = -1;
 	while (tokens[++i])
@@ -82,7 +82,11 @@ int	ft_check_heredoc(char **tokens)
 		if (!ft_strcmp(tokens[i], "<<"))
 		{
 			delimiter = tokens[i + 1];
-			if (read_heredoc(delimiter) == 0)
+			is_quoted = is_it_quoted(delimiter);
+			if (is_quoted)
+				ft_delete_quotes(&delimiter,
+					ft_len_token(delimiter), 0, tokens);
+			if (read_heredoc(delimiter, c_env, is_quoted) == 0)
 				return (0);
 		}
 	}
