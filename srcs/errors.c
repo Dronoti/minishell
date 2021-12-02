@@ -87,3 +87,10 @@ int	ft_isvalid_pipes_braces(char *cmd)
 	}
 	return (0);
 }
+
+int	ft_print_error(char *msg, int code)
+{
+	ft_putendl_fd(msg, 2);
+	g_code = code;
+	return (-1);
+}

@@ -12,13 +12,6 @@
 
 #include "minishell.h"
 
-int	ft_print_error(char *msg, int code)
-{
-	ft_putendl_fd(msg, 2);
-	g_code = code;
-	return (-1);
-}
-
 int	ft_is_start_str(char *str1, char *str2)
 {
 	int	i;
@@ -31,6 +24,16 @@ int	ft_is_start_str(char *str1, char *str2)
 		i++;
 	}
 	return (1);
+}
+
+void	ft_check_code(void)
+{
+	if (g_code == 2)
+		g_code = 130;
+	else if (g_code == 3)
+		g_code = 131;
+	else
+		g_code = WEXITSTATUS(g_code);
 }
 
 int	ft_start_bin(t_bin *param, char **tokens, char **c_env, t_fds fds)
@@ -53,15 +56,30 @@ int	ft_start_bin(t_bin *param, char **tokens, char **c_env, t_fds fds)
 		execve(param->value, tokens, c_env);
 	}
 	wait(&g_code);
-	g_code = WEXITSTATUS(g_code);
+	ft_check_code();
 	if (param->value)
 		free(param->value);
 	return (1);
 }
 
+int	ft_set_value(t_bin *param, char **tokens)
+{
+	param->value = ft_strndup(tokens[0], ft_strlen(tokens[0]));
+	if (lstat(param->value, &param->buf) < 0)
+	{
+		free(param->value);
+		return (1);
+	}
+	return (0);
+}
+
 int	ft_check_exec(t_bin *param, char **tokens, char **c_env, t_fds fds)
 {
-	ft_free_env(param->paths);
+	if (param->paths)
+		ft_free_env(param->paths);
+	if (!param->value)
+		if (ft_set_value(param, tokens))
+			return (0);
 	if (!(param->buf.st_mode & S_IFREG))
 	{
 		if (param->value)

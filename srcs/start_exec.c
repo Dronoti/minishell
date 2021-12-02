@@ -17,9 +17,10 @@ int	ft_check_bins(char **tokens, char ***c_env, t_fds fds)
 	int		i;
 	t_bin	param;
 
+	param.paths = NULL;
 	param.value = ft_get_value_env("PATH", *c_env);
 	if (!param.value)
-		return (0);
+		return (ft_check_exec(&param, tokens, *c_env, fds));
 	param.paths = ft_split(param.value, ':');
 	if (!param.paths)
 		return (ft_print_error("Malloc error", 1));
