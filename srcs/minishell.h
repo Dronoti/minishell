@@ -12,6 +12,8 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define MSG_MINISHELL_EXIT "minishell: exit: "
+# define NUM_ARG_REQUIRED_MSG ": numeric argument required\n"
 
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -21,6 +23,7 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <limits.h>
 
 int		g_code;
 
@@ -165,5 +168,16 @@ char	*construct_abs_path(char **path_splitted, int len);
 void	set_oldpwd_var(char **env);
 void	set_pwd_var(char **const *env, char *path);
 void	err_print_no_such_file_or_dir(char *arg1);
+
+int	copy_env_vars(char **dst, char *const *src);
+int				check_arg1(char *const *args);
+void			write_exit_error_numeric_argument_required(char *first_arg);
+void			exit_on_too_many_args(void);
+long long int	get_first_arg_number(char *first_arg);
+long long int	count_result(const char *first_arg, long long result, int i);
+int	handle_no_params(int fd, char **c_env);
+int	handle_str_with_equals_sign(char *str, char ***c_env);
+char	*rewind_char(char *s, char c);
+void	unset_var(char **existing_var_record, char ***env);
 
 #endif

@@ -11,13 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <limits.h>
-
-int				check_arg1(char *const *args);
-void			write_exit_error_numeric_argument_required(char *first_arg);
-void			exit_on_too_many_args(void);
-long long int	get_first_arg_number(char *first_arg);
-long long int	count_result(const char *first_arg, long long result, int i);
 
 int	ft_exit(char **args)
 {

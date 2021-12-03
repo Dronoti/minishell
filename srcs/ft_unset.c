@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-void	unset_var(char **existing_var_record, char ***env);
-
 int	ft_unset(char **args, int fd, char ***c_env)
 {
 	int		i;

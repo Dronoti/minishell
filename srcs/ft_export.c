@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-int	handle_no_params(int fd, char **c_env);
-int	handle_str_with_equals_sign(char *str, char ***c_env);
-
 int	ft_export(char **args, int fd, char ***c_env)
 {
 	int	i;

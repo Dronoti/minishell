@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#define MSG_MINISHELL_EXIT "minishell: exit: "
-#define NUM_ARG_REQUIRED_MSG ": numeric argument required\n"
 
 void	write_exit_error_numeric_argument_required(char *first_arg)
 {

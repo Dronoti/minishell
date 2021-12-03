@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-int	copy_env_vars(char **dst, char *const *src);
-
 void	ft_free_env(char **c_env)
 {
 	int	i;

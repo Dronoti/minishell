@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-char	*rewind_char(char *s, char c);
-
 static unsigned long long	get_words_count(char const *s, char c)
 {
 	unsigned long long	word_counter;
