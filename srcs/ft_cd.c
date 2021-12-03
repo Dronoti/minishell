@@ -42,7 +42,7 @@ int	ft_cd(char **args, int fd, char ***env)
 	int		len;
 
 	(void) fd;
-	path_splitted = get_path_splitted(args);
+	path_splitted = get_path_splitted(args, *env);
 	if (!path_splitted)
 		return (-1);
 	len = traversing_resolve_dots(path_splitted);
@@ -66,12 +66,21 @@ char	*construct_abs_path(char **path_splitted, int len)
 	return (constract_non_root_path(path_splitted, len));
 }
 
-char	*get_path_raw(char *const *args, char *cwd)
+char	*get_path_raw(char *const *args, char *cwd, char **env)
 {
 	char	*path_raw;
+	char	*home_var_value;
 
 	if (args[1] == NULL)
-		path_raw = ft_strndup(getenv("HOME"), ft_strlen(getenv("HOME")));
+	{
+		home_var_value = ft_get_value_env("HOME", env);
+		if (home_var_value == NULL)
+		{
+			ft_putendl_fd("minishell: cd: HOME not set", 2);
+			return (NULL);
+		}
+		path_raw = ft_strndup(home_var_value, ft_strlen(home_var_value));
+	}
 	else if (args[1][0] == '/')
 		path_raw = ft_strndup(args[1], ft_strlen(args[1]));
 	else
@@ -79,7 +88,7 @@ char	*get_path_raw(char *const *args, char *cwd)
 	return (path_raw);
 }
 
-char	**get_path_splitted(char *const *args)
+char	**get_path_splitted(char *const *args, char **env)
 {
 	char	*cwd_without_trail_slash;
 	char	*cwd;
@@ -93,7 +102,7 @@ char	**get_path_splitted(char *const *args)
 	free(cwd_without_trail_slash);
 	if (cwd == NULL)
 		return (NULL);
-	path_raw = get_path_raw(args, cwd);
+	path_raw = get_path_raw(args, cwd, env);
 	free(cwd);
 	if (!path_raw)
 		return (NULL);

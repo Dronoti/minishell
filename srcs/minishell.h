@@ -160,7 +160,7 @@ char	*construct_root_path(char **path_splitted);
 char	*constract_non_root_path(char **path_splitted, int len);
 int		is_empty(char **path_splitted, int len);
 
-char	**get_path_splitted(char *const *args);
+char	**get_path_splitted(char *const *args, char **env);
 char	*construct_abs_path(char **path_splitted, int len);
 void	set_oldpwd_var(char **env);
 void	set_pwd_var(char **const *env, char *path);
