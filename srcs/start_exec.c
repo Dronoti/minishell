@@ -19,14 +19,13 @@ int	ft_check_bins(char **tokens, char ***c_env, t_fds fds)
 	if (!tokens || !*tokens)
 		return (1);
 	param.paths = NULL;
+	param.value = NULL;
+	if (ft_check_exec(&param, tokens, *c_env, fds))
+		return (1);
 	param.value = ft_get_value_env("PATH", *c_env);
-	if (!param.value)
-		return (ft_check_exec(&param, tokens, *c_env, fds));
 	param.paths = ft_split(param.value, ':');
-	if (!param.paths)
-		return (ft_print_error("Malloc error", 1));
 	param.i = -1;
-	while (param.paths[++param.i])
+	while (param.paths && param.paths[++param.i])
 	{
 		if (ft_is_start_str(param.paths[param.i], tokens[0]))
 			param.value = ft_strndup(tokens[0], ft_strlen(tokens[0]));

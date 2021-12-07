@@ -29,11 +29,8 @@ SRC = srcs/env.c \
 	srcs/utils.c \
 	srcs/utils2.c \
 	srcs/utils3.c \
+	srcs/utils4.c \
 	srcs/ft_split.c \
-	srcs/ft_substr.c \
-	srcs/ft_memchr.c \
-	srcs/ft_memmove.c \
-	srcs/ft_memcpy.c \
 	srcs/ft_echo.c \
 	srcs/ft_pwd.c \
 	srcs/ft_cd.c \
@@ -46,7 +43,6 @@ SRC = srcs/env.c \
 	srcs/ft_unset.c \
 	srcs/ft_exit.c \
 	srcs/ft_exit_helpers.c \
-	srcs/ft_isdigit.c \
 	srcs/pipe.c \
 	srcs/bin.c \
 

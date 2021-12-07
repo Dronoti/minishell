@@ -6,7 +6,7 @@
 /*   By: bkael <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 08:36:54 by bkael             #+#    #+#             */
-/*   Updated: 2021/11/14 16:00:13 by bkael            ###   ########.fr       */
+/*   Updated: 2021/12/07 16:00:13 by bkael            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,13 +140,11 @@ int				ft_check_exec(t_bin *param, char **tokens, char **c_env,
 					t_fds fds);
 int				ft_start_bin(t_bin *param, char **tokens, char **c_env,
 					t_fds fds);
-
 int				ft_exit(char **tokens);
 int				ft_cd(char **tokens, int fd, char ***env);
 int				ft_env(char **tokens, int fd, char **c_env);
 int				ft_export(char **tokens, int fd, char ***c_env);
 int				ft_unset(char **tokens, int fd, char ***c_env);
-
 void			ft_cd_nullify_preceding_pathname(char **path_splitted, int j);
 int				copy_env_vars(char **dst, char *const *src);
 void			setup_var(t_var *var, char *var_str);
@@ -158,7 +156,6 @@ char			*get_starting_from_symbol(char *s, char c);
 void			free_cascade_var(t_var *var);
 int				write_single_var_line(int fd, t_var *var, char *var_str);
 int				ft_isdigit(int c);
-
 int				is_valid_token_next_to_redirect(char *next_token);
 int				ft_check_redirect_input(char ***tokens);
 int				ft_check_heredoc(char **tokens, char **c_env);
@@ -169,14 +166,11 @@ void			make_free(char **var);
 char			*construct_root_path(char **path_splitted);
 char			*constract_non_root_path(char **path_splitted, int len);
 int				is_empty(char **path_splitted, int len);
-
 char			**get_path_splitted(char *const *args, char **env);
 char			*construct_abs_path(char **path_splitted, int len);
 void			set_oldpwd_var(char **env);
 void			set_pwd_var(char **const *env, char *path);
 void			err_print_no_such_file_or_dir(char *arg1);
-
-int				copy_env_vars(char **dst, char *const *src);
 int				check_arg1(char *const *args);
 void			write_exit_error_numeric_argument_required(char *first_arg);
 void			exit_on_too_many_args(void);
